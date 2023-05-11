@@ -1,5 +1,7 @@
 
 
+
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -8,8 +10,9 @@ final Color secondaryColor = Color(0xffB504AF);
 final Color backgroundColor = Color(0xffCED9F7);
 
 class ButtonStyleConstants {
-  static const double buttonHeight = 50.0;
-  static const double buttonWidth = 335.0;
+
+  static const double buttonHeight = 60.0;
+  static const double buttonWidth = 350.0;
   static const double borderRadius = 16.0;
   static const EdgeInsetsGeometry buttonPadding =
   EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0);
@@ -17,21 +20,21 @@ class ButtonStyleConstants {
   static const Color secondaryColor = Color(0xffCED9F7);
 
   static final ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(
-    primary: primaryColor,
+    backgroundColor: primaryColor,
     padding: buttonPadding,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(borderRadius),
     ),
-    minimumSize: Size(buttonWidth, buttonHeight),
+    minimumSize: const Size(buttonWidth, buttonHeight),
   );
 
   static final ButtonStyle secondaryButtonStyle = ElevatedButton.styleFrom(
-    primary: secondaryColor,
+    backgroundColor: secondaryColor,
     padding: buttonPadding,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(borderRadius),
     ),
-    minimumSize: Size(buttonWidth, buttonHeight),
+     minimumSize: const Size(buttonWidth, buttonHeight),
   );
 }
 
@@ -40,34 +43,34 @@ const greenBigText = TextStyle(
   fontSize: 24,
   fontWeight: FontWeight.w500,
   height: 1.23,
-  letterSpacing: 0.5,
+  letterSpacing: 1,
   color: Color(0xff0B615E),
 );
 
 const purpleText = TextStyle(
     fontFamily: 'Guerrer Light',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    letterSpacing: 0.5,
+    letterSpacing: 1,
     color: Color(0xffB504AF)
 );
 
 const whiteText = TextStyle(
     fontFamily: 'Guerrer Light',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    letterSpacing: 0.5,
+    letterSpacing: 1,
     color: Colors.white
 );
 
 const blackText = TextStyle(
     fontFamily: 'Guerrer Light',
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    letterSpacing: 0.5,
+    letterSpacing: 1,
     color: Colors.black
 );
 const greenSmallText = TextStyle(
@@ -75,7 +78,7 @@ const greenSmallText = TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w500,
     height: 1.4,
-    letterSpacing: 0.5,
+    letterSpacing: 1,
     color: Color(0xff0B615E)
 );
 

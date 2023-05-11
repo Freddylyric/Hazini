@@ -16,23 +16,23 @@ class _HelpScreenState extends State<HelpScreen> {
       child: Scaffold(
 
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
             // Help title
-            Text(
+            const Text(
               'HELP',
               style: styles.greenBigText
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Divider(
               color: styles.secondaryColor,
               thickness: 2,
 
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             // Help options
             Column(
               children: [
@@ -112,7 +112,7 @@ class _HelpScreenState extends State<HelpScreen> {
       title: Text(title),
       trailing: Icon(Icons.arrow_forward_ios),
       onTap: () {
-        // Add any help option navigation logic here
+        // Add help option navigation logic here
       },
     );
   }

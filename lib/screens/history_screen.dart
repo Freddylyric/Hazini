@@ -6,9 +6,11 @@ import 'loan_details_screen.dart';
 class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
       appBar: AppBar(
-        backgroundColor: styles.backgroundColor,
+        elevation: 0,
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: styles.secondaryColor,),
           onPressed: () {
@@ -42,6 +44,6 @@ class HistoryScreen extends StatelessWidget {
 
         },
       ),
-    );
+    ));
   }
 }

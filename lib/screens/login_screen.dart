@@ -27,14 +27,15 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return SafeArea(
+      child: Scaffold(
       appBar: AppBar(
         backgroundColor: styles.backgroundColor,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: styles.secondaryColor),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text('LOG IN'),
+        title: Text('LOG IN', style: styles.greenBigText,),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -109,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 onPressed: () {
                   // if (_formKey.currentState!.validate()) {
                     Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
-                    // Add any login logic here
+                    // Add login logic here
                   // }
                 },
                 style: ButtonStyleConstants.primaryButtonStyle,
@@ -132,6 +133,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
+      ));
   }
 }

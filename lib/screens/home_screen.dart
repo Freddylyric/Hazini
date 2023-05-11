@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:hazini/screens/loan_repayment_screen.dart';
 import 'package:hazini/screens/profile_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:hazini/utils/styles.dart' as styles;
@@ -8,7 +9,8 @@ import 'help_screen.dart';
 import 'history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String username = 'John Doe'; // Replace with actual username
+  final String username = 'John Doe'; 
+  final double loanAmount = 5000;// Replace with actual username
 
   //HomeScreen();
 
@@ -18,6 +20,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isLoanInfoExpanded = false;
+  late String _selectedOption;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +30,69 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Scaffold(
         backgroundColor: styles.backgroundColor,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: styles.backgroundColor,
-        leading: CircleAvatar(
-          backgroundColor: styles.backgroundColor,
-          child: Text(widget.username.substring(0, 2)),
-        ),
+        leading: Padding(
+          padding: EdgeInsets.all(10),
+          child: CircleAvatar(
+            backgroundColor: styles.primaryColor,
+            child: Text(widget.username.substring(0, 2),),
+        ),),
         title: Text('Hi there, ${widget.username}', style: styles.greenBigText,),
         actions: [
-          IconButton(
-            icon: Icon(Icons.menu, color: styles.secondaryColor,),
-            onPressed: () {
-              // Add any menu logic here
+          PopupMenuButton(
+            // color: styles.backgroundColor,
+            icon: Icon(Icons.menu,size: 36, color: styles.secondaryColor,),
+            itemBuilder: (BuildContext context) => [
+              PopupMenuItem(
+                value: 'terms',
+                child: Row(
+                  children: [
+                    Icon(Icons.edit_note, color: styles.primaryColor,),
+                    SizedBox(width: 10),
+                    Text('Terms', style: styles.greenSmallText),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
+                value: 'privacy',
+                child: Row(
+                  children: [
+                    Icon(Icons.privacy_tip, color: styles.primaryColor,),
+                    SizedBox(width: 10),
+                    Text('Privacy Policy', style: styles.greenSmallText),
+
+                  ],
+                ),
+
+              ),
+
+              PopupMenuItem(
+                value: 'logout',
+                child: Column(
+                  children: [
+                    // SizedBox(height: 10,),
+                    const Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ), const SizedBox(height: 5,),
+                    Row(
+                      children: [
+                        Icon(Icons.close, color: styles.primaryColor,),
+                        const SizedBox(width: 10),
+                        const Text('Logout', style: styles.greenSmallText,),
+                      ],
+                    ),
+                    const SizedBox(height: 5,),
+                  ],
+                ),
+              ),
+            ],
+            onSelected: (value) {
+              setState(() {
+                _selectedOption = value;
+              });
+              // Add menu option handling here
             },
           ),
         ],
@@ -79,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: styles.greenSmallText,
                               ),SizedBox(height: 10),
 
-                              Text('Ksh 5,000', // Placeholder for loan amount
+                              Text('KES 5,000', // Placeholder for loan amount
                                   style: styles.greenBigText
                               ),
                             ],
@@ -107,20 +164,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLoanInfoRow('Principal', '\$5,000'), // Placeholder for principal amount
-                            _buildLoanInfoRow('Interest', '\$1,000'), // Placeholder for interest amount
-                            _buildLoanInfoRow('Balance', '\$3,000'), // Placeholder for balance amount
+                            _buildLoanInfoRow('Principal', 'KES 5,000'), // Placeholder for principal amount
+                            _buildLoanInfoRow('Interest', 'KES 1,000'), // Placeholder for interest amount
+                            _buildLoanInfoRow('Balance', 'KES 3,000'), // Placeholder for balance amount
                             _buildLoanInfoRow('Period', '12 months'), // Placeholder for period
                             _buildLoanInfoRow('Date Borrowed', '01/01/2022'), // Placeholder for date borrowed
                             _buildLoanInfoRow('Deadline', '01/01/2023'), // Placeholder for deadline
                           ],
                         ),
                       ],
-                      SizedBox(height: 16),
+                      SizedBox(height: 10),
+                      const Divider(
+                        color: Colors.grey,
+                        thickness: 1,
+                      ),
+                      SizedBox(height: 10,),
                       // Pay now button
                       ElevatedButton(
                         onPressed: () {
-                          // Add any "pay now" logic here
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoanRepaymentScreen()));
+                          // Add "pay now" logic here
                         },
                         style: styles.ButtonStyleConstants.primaryButtonStyle,
                         child: const Text('Pay now'),
