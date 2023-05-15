@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hazini/screens/home_screen.dart';
+import 'package:hazini/screens/password_screen.dart';
 import 'package:hazini/screens/sign_up_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 
@@ -120,11 +121,11 @@ class _LoginScreenState extends State<LoginScreen> {
               // Forgot PIN text
               GestureDetector(
                 onTap: () {
-                  // Add any "forgot PIN" logic here
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordScreen()));
                 },
                 child: const Text(
                   'I forgot my PIN',
-                  style: styles.purpleText,
+                  style: styles.purpleUnderlinedText,
                   ),
                 ),
 

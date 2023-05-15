@@ -56,6 +56,16 @@ const purpleText = TextStyle(
     color: Color(0xffB504AF)
 );
 
+const purpleUnderlinedText = TextStyle(
+    fontFamily: 'Guerrer Light',
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    height: 1.4,
+    letterSpacing: 1,
+    color: Color(0xffB504AF),
+    decoration: TextDecoration.underline
+);
+
 const whiteText = TextStyle(
     fontFamily: 'Guerrer Light',
     fontSize: 16,
@@ -81,4 +91,17 @@ const greenSmallText = TextStyle(
     letterSpacing: 1,
     color: Color(0xff0B615E)
 );
+
+
+
+const greenUnderlinedText = TextStyle(
+    fontFamily: 'Guerrer Light',
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    height: 1.4,
+    letterSpacing: 1,
+    color: Color(0xff0B615E),
+    decoration: TextDecoration.underline
+);
+
 

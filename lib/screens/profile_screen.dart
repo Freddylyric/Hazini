@@ -129,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
             },
             child: const Text(
               'Logout',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.purpleAccent),
+              style: styles.purpleUnderlinedText,
             ),
           ),
         ])));
