@@ -3,8 +3,18 @@ import 'package:hazini/screens/login_screen.dart';
 import 'package:hazini/screens/sign_up_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
+import 'package:http/http.dart' as http;
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
+import 'adapters/user_model.dart';
+
+
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(UserModelAdapter());
+  await Hive.openBox<UserModel>('userBox');
+
   runApp(const MyApp());
 }
 

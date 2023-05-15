@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hazini/screens/home_screen.dart';
 import 'package:hazini/screens/password_screen.dart';
 import 'package:hazini/screens/sign_up_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
+import 'package:http/http.dart' as http;
 
 import '../utils/styles.dart';
 
@@ -12,23 +16,91 @@ class OTPConfirmScreen extends StatefulWidget {
 }
 
 class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
-  final _phoneNumberController = TextEditingController();
-  final _pinController = TextEditingController();
-  final _confirmPinController = TextEditingController();
-  final _otpController = TextEditingController();
+
+  TextEditingController _pinController = TextEditingController();
+  TextEditingController _confirmPinController = TextEditingController();
+  TextEditingController _otpController = TextEditingController();
+  // final _pinController = TextEditingController();
+  // final _confirmPinController = TextEditingController();
+  // final _otpController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _obscurePin = true;
   bool _obscureConfirmPin = true;
-  String? _phone;
+
+  final _storage = const FlutterSecureStorage();
+  late String storedValue;
+
   String? _pin;
   String? _otp;
 
   @override
+  void initState() {
+    super.initState();
+    _getPhoneNumber();
+  }
+
+  Future<void> _getPhoneNumber() async {
+    storedValue = (await _storage.read(key: 'phone_number2'))!;
+    setState(() {});
+  }
+
+  @override
   void dispose() {
-    _phoneNumberController.dispose();
     _pinController.dispose();
     super.dispose();
   }
+
+  Future<void> _login() async {
+    final pin = _pinController.text;
+    final pin2 = _confirmPinController.text;
+    final otp = _otpController.text;
+
+    print(storedValue);
+
+    if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
+
+      final url = Uri.parse('https://dev.hazini.com/ussd/reset-password');
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({
+          'otp': otp,
+          'password': pin2,
+          'phone_number': storedValue,
+        }),
+      );
+      if (response.statusCode == 200) {
+        // Password reset success, automatically log in the user
+        // Here, you can implement the logic to save the user session or token
+        // and navigate to the home screen
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomeScreen()),
+        );
+      } else {
+        // Password reset failed, show an error dialog
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Failed to reset password. Please try again later.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -61,40 +133,18 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                         ),
                         labelText: 'OTP',
                       ),
-                      // validator: (value) {
-                      //   if (value!.isEmpty) {
-                      //     return 'Please enter your phone number';
-                      //   }
-                      //
-                      //   // additional validation logic for the phone number
-                      //   return null;
-                      // },
-                      onSaved: (value) {
-                        _otp = value;
-                      }
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please enter your OTP';
+                        }
+
+                        // additional validation logic for the phone number
+                        return null;
+                      },
+
                   ),
                   const SizedBox(height: 30),
-                  // TextFormField(
-                  //     controller: _phoneNumberController,
-                  //     keyboardType: TextInputType.phone,
-                  //     decoration:  InputDecoration(
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.circular(8),
-                  //       ),
-                  //       labelText: 'Phone number',
-                  //     ),
-                  //     // validator: (value) {
-                  //     //   if (value!.isEmpty) {
-                  //     //     return 'Please enter your phone number';
-                  //     //   }
-                  //     //
-                  //     //   // additional validation logic for the phone number
-                  //     //   return null;
-                  //     // },
-                  //     onSaved: (value) {
-                  //       _phone = value;
-                  //     }
-                  // ),
+
 
                   // Pin input field
                   TextFormField(
@@ -121,15 +171,13 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                       validator: (value) {
                         if (value!.isEmpty) {
                           return 'Please enter your PIN';
-                        } else if (value.length != 5) {
-                          return 'PIN must be 5 digits';
+                        } else if (value.length != 4) {
+                          return 'PIN must be 4 digits';
                         }
                         // Add any additional validation logic for the PIN here
                         return null;
                       },
-                      onSaved: (value) {
-                        _pin = value;
-                      }
+
                   ),
                   const SizedBox(height: 30),
                   TextFormField(

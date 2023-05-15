@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:hazini/adapters/user_model.dart';
 import 'package:hazini/screens/loan_repayment_screen.dart';
 import 'package:hazini/screens/profile_screen.dart';
+import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 
@@ -9,10 +11,7 @@ import 'help_screen.dart';
 import 'history_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  final String username = 'John Doe'; 
-  final double loanAmount = 5000;// Replace with actual username
 
-  //HomeScreen();
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -22,10 +21,29 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isLoanInfoExpanded = false;
   late String _selectedOption;
 
+  UserModel? _userModel;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserData();
+  }
+
+  //methd to fetch user data from hive
+  void _getUserData(){
+    final box = Hive.box<UserModel>('userBox');
+    _userModel = box.get(0);
+  }
+
 
 
   @override
   Widget build(BuildContext context) {
+
+    //check if userdata is available
+    if (_userModel == null){
+      return CircularProgressIndicator();
+    }
     return SafeArea(
       child: Scaffold(
         backgroundColor: styles.backgroundColor,
@@ -36,9 +54,10 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: EdgeInsets.all(10),
           child: CircleAvatar(
             backgroundColor: styles.primaryColor,
-            child: Text(widget.username.substring(0, 2),),
-        ),),
-        title: Text('Hi there, ${widget.username}', style: styles.greenBigText,),
+            child: Text(_userModel!.name.substring(0, 2),),
+
+          ),),
+        title: Text('Hi there, ${_userModel?.name}', style: styles.greenBigText,),
         actions: [
           PopupMenuButton(
             // color: styles.backgroundColor,
@@ -135,8 +154,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 'You have a loan of:',
                                 style: styles.greenSmallText,
                               ),SizedBox(height: 10),
-
-                              Text('KES 5,000', // Placeholder for loan amount
+                              Text(
+                                  NumberFormat.currency(
+                                    symbol: 'KES',
+                                  ).format(_userModel?.balance ?? 0),
+                    // Placeholder for loan amount
                                   style: styles.greenBigText
                               ),
                             ],
@@ -164,12 +186,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLoanInfoRow('Principal', 'KES 5,000'), // Placeholder for principal amount
-                            _buildLoanInfoRow('Interest', 'KES 1,000'), // Placeholder for interest amount
-                            _buildLoanInfoRow('Balance', 'KES 3,000'), // Placeholder for balance amount
-                            _buildLoanInfoRow('Period', '12 months'), // Placeholder for period
-                            _buildLoanInfoRow('Date Borrowed', '01/01/2022'), // Placeholder for date borrowed
-                            _buildLoanInfoRow('Deadline', '01/01/2023'), // Placeholder for deadline
+                            _buildLoanInfoRow('Principal', _userModel?.outstandingLoan?['principal']?.toString() ?? ''),
+                            _buildLoanInfoRow('Interest', _userModel?.outstandingLoan?['interest']?.toString() ?? ''),
+                            _buildLoanInfoRow('Balance', _userModel?.outstandingLoan?['due_amount']?.toString() ?? ''),
+                            _buildLoanInfoRow('Period', _userModel?.outstandingLoan?['duration']?.toString() ?? ''),
+                            _buildLoanInfoRow('Date Borrowed', _userModel?.outstandingLoan?['requested_at']?.toString() ?? ''),
+                            _buildLoanInfoRow('Deadline', _userModel?.outstandingLoan?['due_on']?.toString() ?? '')
+                            // Placeholder for deadline
                           ],
                         ),
                       ],
@@ -205,8 +228,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildTab('Profile', Icons.person_2_outlined, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProfileScreen()),
-                      );
+                        MaterialPageRoute(builder: (context) => ProfileScreen(userModel: _userModel!),
+                        ),);
                     }),
                     _buildTab('Help', Icons.question_mark, () {
                       Navigator.push(
@@ -281,5 +304,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
 
 }
