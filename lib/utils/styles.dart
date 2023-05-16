@@ -13,6 +13,8 @@ class ButtonStyleConstants {
 
   static const double buttonHeight = 60.0;
   static const double buttonWidth = 350.0;
+  static const double smallButtonHeight = 50.0;
+  static const double smallButtonWidth = 100.0;
   static const double borderRadius = 16.0;
   static const EdgeInsetsGeometry buttonPadding =
   EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0);
@@ -36,7 +38,18 @@ class ButtonStyleConstants {
     ),
      minimumSize: const Size(buttonWidth, buttonHeight),
   );
+  static final ButtonStyle smallButtonStyle = ElevatedButton.styleFrom(
+    backgroundColor: primaryColor,
+    padding: buttonPadding,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(borderRadius),
+    ),
+    minimumSize: const Size(smallButtonWidth, smallButtonHeight),
+
+  );
 }
+
+
 
 const greenBigText = TextStyle(
   fontFamily: 'Guerrer Light',

@@ -1,10 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hazini/main.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../adapters/user_model.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatefulWidget {
   final UserModel userModel;
@@ -22,8 +24,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    super.initState();
     _getPhoneNumber();
+    super.initState();
+
   }
 
   Future<void> _getPhoneNumber() async {
@@ -149,6 +152,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           GestureDetector(
             onTap: () {
+                // Perform logout actions here
+                _performLogout();
+
               // Add logout logic here
             },
             child: const Text(
@@ -157,5 +163,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ),
         ])));
+  }
+
+
+  void _performLogout() async {
+    await _storage.delete(key: 'token');
+    await _storage.delete(key: 'phone_number');
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => MyHomePage()),
+    );
   }
 }

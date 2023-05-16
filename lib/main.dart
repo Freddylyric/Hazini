@@ -97,18 +97,18 @@ class _MyHomePageState extends State<MyHomePage> {
                     color: Colors.grey[300],
                   ),
                   const SizedBox(height: 20,),
-                  ElevatedButton(onPressed:(){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpScreen()));
-                  },
-                      style: ButtonStyleConstants.primaryButtonStyle,
-                      child: Row(
-
-                        children: const [
-                          Icon(Icons.person_2_outlined, color: Colors.white),
-                          SizedBox(width: 20,),
-                          Text("Sign up for an account", style: styles.whiteText, textAlign: TextAlign.center,),
-                        ],
-                      )),
+                  // ElevatedButton(onPressed:(){
+                  //   Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpScreen()));
+                  // },
+                  //     style: ButtonStyleConstants.primaryButtonStyle,
+                  //     child: Row(
+                  //
+                  //       children: const [
+                  //         Icon(Icons.person_2_outlined, color: Colors.white),
+                  //         SizedBox(width: 20,),
+                  //         Text("Sign up for an account", style: styles.whiteText, textAlign: TextAlign.center,),
+                  //       ],
+                  //     )),
                 ],
               ),
             ),

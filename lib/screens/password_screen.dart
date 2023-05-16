@@ -29,7 +29,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     final phone = _phoneNumberController.text;
     // Validate the phone number
     if (_formKey.currentState!.validate()) {
-      await _storage.write(key: 'phone_number2', value: phone);
+      await _storage.write(key: 'phone_number', value: phone);
       print(phone);
       // Send the OTP request
       try {
@@ -59,7 +59,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
             builder: (BuildContext context) {
               return AlertDialog(
                 title: Text('Error'),
-                content: Text('Failed to send OTP. Please try again later.'),
+                content: Text('Invalid Phone number. Please try again.'),
                 actions: [
                   TextButton(
                     child: Text('OK'),

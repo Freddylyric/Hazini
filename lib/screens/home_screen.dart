@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hazini/adapters/user_model.dart';
 import 'package:hazini/screens/loan_repayment_screen.dart';
 import 'package:hazini/screens/profile_screen.dart';
+import 'package:hazini/screens/request_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 
+import '../main.dart';
 import 'help_screen.dart';
 import 'history_screen.dart';
+import 'dart:convert';
+import 'package:hazini/adapters/user_model.dart';
+import 'package:http/http.dart' as http;
+
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
 
@@ -18,21 +26,95 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool _isLoanInfoExpanded = false;
+  bool _isLoanInfoExpanded = true;
   late String _selectedOption;
+  final _storage = const FlutterSecureStorage();
+  late String storedValue;
+
 
   UserModel? _userModel;
 
   @override
   void initState() {
-    super.initState();
     _getUserData();
+    super.initState();
+
+  }
+
+
+  // Method to fetch user data from the API using phone number
+  Future<void> _fetchUserData(String phoneNumber) async {
+    final url = Uri.parse('https://dev.hazini.com/ussd');
+    final requestBody = json.encode({'phone_number': phoneNumber});
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: requestBody,
+    );
+
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+
+      // Create a UserModel object with the response data
+      UserModel user = UserModel(
+        name: jsonResponse['name'],
+        email: jsonResponse['email'],
+        balance: jsonResponse['balance'],
+        salary: jsonResponse['salary'],
+        kraPin: jsonResponse['kra_pin'],
+        maxLoan: jsonResponse['max_loan'],
+        status: jsonResponse['status'],
+        companyId: jsonResponse['company_id'],
+        canBorrow: jsonResponse['can_borrow'],
+        cannotBorrowReason: jsonResponse['cannot_borrow_reason'],
+        outstandingLoan: jsonResponse['outstanding_loan'],
+      );
+
+      // Save the user model to the Hive database
+      final box = Hive.box<UserModel>('userBox');
+      box.add(user);
+
+      // Update the state with the fetched user data
+      setState(() {
+        _userModel = user;
+      });
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Error'),
+            content: Text('Failed to fetch user data. Please try again later.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   //methd to fetch user data from hive
-  void _getUserData(){
+  Future<void> _getUserData() async {
     final box = Hive.box<UserModel>('userBox');
-    _userModel = box.get(0);
+    final user = box.get(0);
+    if (user != null) {
+      setState(() {
+        _userModel = user;
+      });
+    } else {
+      // If user data is not available in secure storage,
+      // fetch the user data using the phone number from the API
+      final phoneNumber = (await _storage.read(key: 'phone_number'))!; // Get the phone number from secure storage
+      if (phoneNumber != null && phoneNumber.isNotEmpty) {
+        _fetchUserData(phoneNumber);
+      }
+    }
   }
 
 
@@ -42,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     //check if userdata is available
     if (_userModel == null){
-      return CircularProgressIndicator();
+      return const Center(child: CircularProgressIndicator());
     }
     return SafeArea(
       child: Scaffold(
@@ -57,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Text(_userModel!.name.substring(0, 2),),
 
           ),),
-        title: Text('Hi there, ${_userModel?.name}', style: styles.greenBigText,),
+        title: Text('Hi there ${_userModel?.name},', style: styles.greenBigText,),
         actions: [
           PopupMenuButton(
             // color: styles.backgroundColor,
@@ -111,7 +193,12 @@ class _HomeScreenState extends State<HomeScreen> {
               setState(() {
                 _selectedOption = value;
               });
-              // Add menu option handling here
+
+              // Add menu option handling
+              if (value == 'logout') {
+                // Perform logout actions here
+                _performLogout();
+              }
             },
           ),
         ],
@@ -164,7 +251,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
 
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
                             icon: Icon(
                               _isLoanInfoExpanded
@@ -174,7 +261,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             onPressed: () {
                               setState(() {
-                                _isLoanInfoExpanded = !_isLoanInfoExpanded;
+                               _isLoanInfoExpanded = !_isLoanInfoExpanded;
                               });
                             },
                           ),
@@ -203,14 +290,26 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       SizedBox(height: 10,),
                       // Pay now button
-                      ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => LoanRepaymentScreen()));
-                          // Add "pay now" logic here
-                        },
-                        style: styles.ButtonStyleConstants.primaryButtonStyle,
-                        child: const Text('Pay now'),
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoanRepaymentScreen(userModel: _userModel!,)));
+                              // Add "pay now" logic here
+                            },
+                            style: styles.ButtonStyleConstants.smallButtonStyle,
+                            child: const Text('Pay now'),
+                          ),
+                          const Spacer(),
+                          ElevatedButton(onPressed: (){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestScreen()));
+
+                          },
+                              style: styles.ButtonStyleConstants.smallButtonStyle,
+                              child: const Text('Request a Loan')),
+                        ],
                       ),
+
                     ],
                   ),
                 ),
@@ -302,6 +401,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _performLogout() async {
+    await _storage.delete(key: 'token');
+    await _storage.delete(key: 'phone_number');
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const MyHomePage()),
     );
   }
 

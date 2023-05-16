@@ -40,7 +40,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
   }
 
   Future<void> _getPhoneNumber() async {
-    storedValue = (await _storage.read(key: 'phone_number2'))!;
+    storedValue = (await _storage.read(key: 'phone_number'))!;
     setState(() {});
   }
 
@@ -72,7 +72,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
       );
       if (response.statusCode == 200) {
         // Password reset success, automatically log in the user
-        // Here, you can implement the logic to save the user session or token
+        // logic to save the user session or token
         // and navigate to the home screen
         Navigator.push(
           context,
@@ -114,132 +114,135 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
             ),
             title: Text('LOG IN', style: styles.greenBigText,),
           ),
-          body: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  SizedBox(height: 30),
+          body: ListView(
+            children: [
+              Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 30),
 
-                  // Phone number input field
-                  TextFormField(
-                      controller: _otpController,
-                      keyboardType: TextInputType.visiblePassword,
-                      decoration:  InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
+                    // Phone number input field
+                    TextFormField(
+                        controller: _otpController,
+                        keyboardType: TextInputType.visiblePassword,
+                        decoration:  InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          labelText: 'OTP',
                         ),
-                        labelText: 'OTP',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please enter your OTP';
-                        }
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your OTP';
+                          }
 
-                        // additional validation logic for the phone number
-                        return null;
-                      },
+                          // additional validation logic for the phone number
+                          return null;
+                        },
 
-                  ),
-                  const SizedBox(height: 30),
+                    ),
+                    const SizedBox(height: 30),
 
 
-                  // Pin input field
-                  TextFormField(
-                      controller: _pinController,
+                    // Pin input field
+                    TextFormField(
+                        controller: _pinController,
+                        keyboardType: TextInputType.number,
+                        obscureText: _obscurePin,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          labelText: 'PIN',
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscurePin ? Icons.visibility : Icons.visibility_off,
+                              color: Colors.purple,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscurePin = !_obscurePin;
+                              });
+                            },
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your PIN';
+                          } else if (value.length != 4) {
+                            return 'PIN must be 4 digits';
+                          }
+                          // Add any additional validation logic for the PIN here
+                          return null;
+                        },
+
+                    ),
+                    const SizedBox(height: 30),
+                    TextFormField(
+                      controller: _confirmPinController,
                       keyboardType: TextInputType.number,
-                      obscureText: _obscurePin,
+                      obscureText: _obscureConfirmPin,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        labelText: 'PIN',
+                        labelText: 'Confirm PIN',
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscurePin ? Icons.visibility : Icons.visibility_off,
+                            _obscureConfirmPin ? Icons.visibility : Icons.visibility_off,
                             color: Colors.purple,
                           ),
                           onPressed: () {
                             setState(() {
-                              _obscurePin = !_obscurePin;
+                              _obscureConfirmPin = !_obscureConfirmPin;
                             });
                           },
                         ),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
-                          return 'Please enter your PIN';
-                        } else if (value.length != 4) {
-                          return 'PIN must be 4 digits';
+                          return 'Please confirm your PIN';
+                        } else if (value != _pinController.text) {
+                          return 'PINs do not match';
                         }
-                        // Add any additional validation logic for the PIN here
                         return null;
                       },
-
-                  ),
-                  const SizedBox(height: 30),
-                  TextFormField(
-                    controller: _confirmPinController,
-                    keyboardType: TextInputType.number,
-                    obscureText: _obscureConfirmPin,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      labelText: 'Confirm PIN',
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscureConfirmPin ? Icons.visibility : Icons.visibility_off,
-                          color: Colors.purple,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _obscureConfirmPin = !_obscureConfirmPin;
-                          });
-                        },
-                      ),
                     ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please confirm your PIN';
-                      } else if (value != _pinController.text) {
-                        return 'PINs do not match';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 30),
+                    const SizedBox(height: 30),
 // Log in button
-                  ElevatedButton(
-                    onPressed: () {
-                      // if (_formKey.currentState!.validate()) {
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
-                        // Add login logic here
-                      // }
-                    },
-                    style: ButtonStyleConstants.primaryButtonStyle,
-                    child: Text('LOG IN'),
-                  ),
-
-                  const SizedBox(height: 30),
-                  // Forgot PIN text
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordScreen()));
-                    },
-                    child: const Text(
-                      'I forgot my PIN',
-                      style: styles.purpleUnderlinedText,
+                    ElevatedButton(
+                      onPressed: () {
+                        // if (_formKey.currentState!.validate()) {
+                         _login();
+                          // Add login logic here
+                        // }
+                      },
+                      style: ButtonStyleConstants.primaryButtonStyle,
+                      child: Text('LOG IN'),
                     ),
-                  ),
+
+                    const SizedBox(height: 30),
+                    // Forgot PIN text
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordScreen()));
+                      },
+                      child: const Text(
+                        'I forgot my PIN',
+                        style: styles.purpleUnderlinedText,
+                      ),
+                    ),
 
 
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
+          ]),
         ));
   }
 }
