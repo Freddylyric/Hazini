@@ -125,9 +125,67 @@ class _RequestScreenState extends State<RequestScreen> {
     }
   }
 
-  void _requestLoan(int amount) {
-    // Implement the loan request logic here
+
+
+  void _requestLoan(int amount) async {
+    // final token = await _storage.read(key: 'token');
+    //
+    // if (token != null && token.isNotEmpty) {
+    //   final url = Uri.parse('https://dev.hazini.com/ussd/process-loan');
+    //   final headers = {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'};
+    //   final body = json.encode({
+    //     'offer_id': _loanOffers[0].loanProductId,
+    //     'amount': amount,
+    //   });
+    //
+    //   final response = await http.post(
+    //     url,
+    //     headers: headers,
+    //     body: body,
+    //   );
+    //
+    //   if (response.statusCode == 200) {
+    //     showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return AlertDialog(
+    //           title: Text('Success'),
+    //           content: Text('Loan requested successfully.'),
+    //           actions: [
+    //             TextButton(
+    //               child: Text('OK'),
+    //               onPressed: () {
+    //                 Navigator.of(context).pop();
+    //               },
+    //             ),
+    //           ],
+    //         );
+    //       },
+    //     );
+    //   } else {
+    //     showDialog(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return AlertDialog(
+    //           title: Text('Error'),
+    //           content: Text('Failed to request loan. Please try again later.'),
+    //           actions: [
+    //             TextButton(
+    //               child: Text('OK'),
+    //               onPressed: () {
+    //                 Navigator.of(context).pop();
+    //               },
+    //             ),
+    //           ],
+    //         );
+    //       },
+    //     );
+    //   }
+    // } else {
+    //
+    // }
   }
+
 
 
   @override

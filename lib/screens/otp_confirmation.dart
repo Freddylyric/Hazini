@@ -9,6 +9,7 @@ import 'package:hazini/utils/styles.dart' as styles;
 import 'package:http/http.dart' as http;
 
 import '../utils/styles.dart';
+import 'login_screen.dart';
 
 class OTPConfirmScreen extends StatefulWidget {
   @override
@@ -29,6 +30,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
 
   final _storage = const FlutterSecureStorage();
   late String storedValue;
+  String _message = '';
 
   String? _pin;
   String? _otp;
@@ -37,6 +39,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
   void initState() {
     super.initState();
     _getPhoneNumber();
+    _message = '';
   }
 
   Future<void> _getPhoneNumber() async {
@@ -71,12 +74,25 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
         }),
       );
       if (response.statusCode == 200) {
+
+        // final jsonResponse = json.decode(response.body);
+        // final token = jsonResponse['token'];
+        //
+        //
+        // //save token &number in secure storage
+        // await _storage.write(key: 'token', value: token);
+        // print('otptokensaved');
+        // setState(() {
+        //   _message = jsonResponse['message'];
+        // });
+
+
         // Password reset success, automatically log in the user
         // logic to save the user session or token
         // and navigate to the home screen
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => LoginScreen()),
         );
       } else {
         // Password reset failed, show an error dialog
@@ -112,7 +128,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
               icon: Icon(Icons.arrow_back, color: styles.secondaryColor),
               onPressed: () => Navigator.of(context).pop(),
             ),
-            title: Text('LOG IN', style: styles.greenBigText,),
+            title: Text('Reset you PIN', style: styles.greenBigText,),
           ),
           body: ListView(
             children: [
@@ -157,10 +173,10 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          labelText: 'PIN',
+                          labelText: 'New PIN (5 digits)',
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obscurePin ? Icons.visibility : Icons.visibility_off,
+                              _obscurePin ? Icons.visibility_off : Icons.visibility,
                               color: Colors.purple,
                             ),
                             onPressed: () {
@@ -173,8 +189,9 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'Please enter your PIN';
-                          } else if (value.length != 4) {
-                            return 'PIN must be 4 digits';
+                          }
+                          else if (value.length != 5) {
+                            return 'PIN must be 5 digits';
                           }
                           // Add any additional validation logic for the PIN here
                           return null;
@@ -190,10 +207,10 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        labelText: 'Confirm PIN',
+                        labelText: 'Confirm New PIN',
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _obscureConfirmPin ? Icons.visibility : Icons.visibility_off,
+                            _obscureConfirmPin ? Icons.visibility_off : Icons.visibility,
                             color: Colors.purple,
                           ),
                           onPressed: () {
@@ -222,7 +239,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                         // }
                       },
                       style: ButtonStyleConstants.primaryButtonStyle,
-                      child: Text('LOG IN'),
+                      child: Text('RESET PIN'),
                     ),
 
                     const SizedBox(height: 30),
@@ -232,7 +249,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                         Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordScreen()));
                       },
                       child: const Text(
-                        'I forgot my PIN',
+                        'Request OTP',
                         style: styles.purpleUnderlinedText,
                       ),
                     ),

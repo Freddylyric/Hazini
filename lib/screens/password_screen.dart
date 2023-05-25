@@ -26,7 +26,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
   Future<void> _requestOTP() async {
 
-    final phone = _phoneNumberController.text;
+    final phone = formatNumber(_phoneNumberController.text);
     // Validate the phone number
     if (_formKey.currentState!.validate()) {
       await _storage.write(key: 'phone_number', value: phone);
@@ -156,5 +156,34 @@ class _PasswordScreenState extends State<PasswordScreen> {
               )
           ));
     }
+
+  String formatNumber(String phone) {
+    if (phone.isEmpty) {
+      return '';
+    }
+
+    if (phone.startsWith('+') || phone.startsWith('0')) {
+      phone = phone.substring(1);
+    }
+
+    if (phone.length <= 8) {
+      return '';
+    }
+
+    String subst = phone.substring(0, 4);
+
+    if (subst.startsWith('+254')) {
+      return phone;
+    } else if (subst.startsWith('0')) {
+      return '+254${phone.substring(1)}';
+    } else if (phone.startsWith('254')) {
+      return '+$phone';
+    } else {
+      return '+254$phone';
+    }
+
+
+  }
+
   }
 

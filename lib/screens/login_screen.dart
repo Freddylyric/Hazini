@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
       _errorMessage = '';
     });
 
-    final phoneNumber = _phoneNumberController.text;
+    final phoneNumber = formatNumber(_phoneNumberController.text);
     final password = _passwordController.text;
 
     try {
@@ -158,10 +158,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    labelText: 'PIN',
+                    labelText: 'PIN (5 digits)',
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePin ? Icons.visibility : Icons.visibility_off,
+                        _obscurePin ? Icons.visibility_off : Icons.visibility,
                         color: Colors.purple,
                       ),
                       onPressed: () {
@@ -174,8 +174,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Please enter your PIN';
-                    } else if (value.length != 4) {
-                      return 'PIN must be 4 digits';
+                    } else if (value.length != 5) {
+                      return 'PIN must be 5 digits';
                     }
                     // Add any additional validation logic for the PIN here
                     return null;
@@ -220,4 +220,35 @@ class _LoginScreenState extends State<LoginScreen> {
       ]),
       ));
   }
+
+  String formatNumber(String phone) {
+    if (phone.isEmpty) {
+      return '';
+    }
+
+    if (phone.startsWith('+') || phone.startsWith('0')) {
+      phone = phone.substring(1);
+    }
+
+    if (phone.length <= 8) {
+      return '';
+    }
+
+    String subst = phone.substring(0, 4);
+
+    if (subst.startsWith('+254')) {
+      return phone;
+    } else if (subst.startsWith('0')) {
+      return '+254${phone.substring(1)}';
+    } else if (phone.startsWith('254')) {
+      return '+$phone';
+    } else {
+      return '+254$phone';
+    }
+  }
+
+
+
+
+
 }
