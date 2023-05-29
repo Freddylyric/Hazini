@@ -321,7 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildTab('History', Icons.file_copy_outlined, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HistoryScreen()),
+                        MaterialPageRoute(builder: (context) => HistoryScreen(userModel: _userModel!)),
                       );
                     }),
                     _buildTab('Profile', Icons.person_2_outlined, () {

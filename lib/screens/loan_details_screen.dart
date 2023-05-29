@@ -4,6 +4,8 @@ import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 
 class LoanDetailsScreen extends StatelessWidget {
+
+
   final int loanNumber = 1;
   final double loanAmount = 5000;
 
@@ -100,6 +102,7 @@ class LoanDetailsScreen extends StatelessWidget {
               'Transaction History',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor), textAlign: TextAlign.start,
             ),
+            trailing: Icon(Icons.expand_more, color: styles.primaryColor,),
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16),
@@ -111,7 +114,6 @@ class LoanDetailsScreen extends StatelessWidget {
                 ),
               ),
             ],
-            trailing: Icon(Icons.expand_more, color: styles.primaryColor,),
           ),
           ElevatedButton(onPressed: (){
             //TODO: handle close

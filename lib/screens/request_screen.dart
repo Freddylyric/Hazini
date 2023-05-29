@@ -60,7 +60,7 @@ class _RequestScreenState extends State<RequestScreen> {
         builder: (BuildContext context) {
           return AlertDialog(
             title: Text('Error'),
-            content: Text('Failed to fetch loan limit. Please try again later.'),
+            content: const Text('Failed to fetch loan limit. Please try again later.'),
             actions: [
               TextButton(
                 child: Text('OK'),

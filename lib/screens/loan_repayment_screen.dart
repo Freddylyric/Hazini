@@ -23,7 +23,7 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
   void _makeRepayment() async {
     final token = await _storage.read(key: 'token');
     if (token != null && token.isNotEmpty) {
-      final url = Uri.parse('https://example.com/api/stk-push'); // Replace with the actual API endpoint
+      final url = Uri.parse('https://dev.hazini.com/ussd/initiate-stk-push');
       final response = await http.post(
         url,
         headers: {'Authorization': 'Bearer $token'},
@@ -33,10 +33,10 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
       );
 
       if (response.statusCode == 200) {
-        // Repayment request successful, handle the response accordingly
+        // TODO: Repayment request successful, handle the response accordingly
         print('stk sent');
       } else {
-        // Repayment request failed, handle the error
+        //ToDo: Repayment request failed, handle the error
         showDialog(
           context: context,
           builder: (BuildContext context) {
