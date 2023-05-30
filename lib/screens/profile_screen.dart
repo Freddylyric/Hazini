@@ -6,6 +6,7 @@ import 'package:hazini/main.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import '../adapters/user_model.dart';
 import 'login_screen.dart';
@@ -211,6 +212,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
   void _performLogout() async {
+
+    // Clear the Hive database
+    await Hive.box<UserModel>('userBox').clear();
+
     await _storage.delete(key: 'token');
     await _storage.delete(key: 'phone_number');
 

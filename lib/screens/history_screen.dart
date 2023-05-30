@@ -36,11 +36,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListTile(
-              title: Text('KES ${widget.userModel.balance.toString()}', style: styles.greenSmallText,), // Placeholder for loan
+              title: Text('KES ${widget.userModel.outstandingLoan? ['due_amount']}', style: styles.greenSmallText,), // Placeholder for loan
               subtitle: Text('${widget.userModel.outstandingLoan? ['requested_at']}', style: styles. greenSmallText,), // Placeholder
-
-
-
 
 
               trailing: Row(
