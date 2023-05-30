@@ -36,8 +36,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListTile(
-              title: Text(widget.userModel.balance.toString(), style: styles.greenSmallText,), // Placeholder for loan
-              subtitle: Text(widget.userModel.outstandingLoan? ['due_on'], style: styles. greenSmallText,), // Placeholder
+              title: Text('KES ${widget.userModel.balance.toString()}', style: styles.greenSmallText,), // Placeholder for loan
+              subtitle: Text('${widget.userModel.outstandingLoan? ['requested_at']}', style: styles. greenSmallText,), // Placeholder
+
+
+
+
+
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -49,7 +54,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 // Navigate to loan details screen
                 Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => LoanDetailsScreen()),);
+                    MaterialPageRoute(builder: (context) => LoanDetailsScreen( loan: widget.userModel.outstandingLoan)),);
               },
             ));
 

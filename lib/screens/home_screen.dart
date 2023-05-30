@@ -59,10 +59,10 @@ class _HomeScreenState extends State<HomeScreen> {
       UserModel user = UserModel(
         name: jsonResponse['name'],
         email: jsonResponse['email'],
-        balance: jsonResponse['balance'],
-        salary: jsonResponse['salary'],
+        balance: jsonResponse['balance'].toInt(),
+        salary: jsonResponse['salary'] .toInt(),
         kraPin: jsonResponse['kra_pin'],
-        maxLoan: jsonResponse['max_loan'],
+        maxLoan: jsonResponse['max_loan'].toInt(),
         status: jsonResponse['status'],
         companyId: jsonResponse['company_id'],
         canBorrow: jsonResponse['can_borrow'],
@@ -108,14 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
         _userModel = user;
       });
     } else {
-      // If user data is not available in secure storage,
-      // fetch the user data using the phone number from the API
-      final phoneNumber = (await _storage.read(key: 'phone_number'))!; // Get the phone number from secure storage
+      // Clear the user data from the Hive box
+      box.clear();
+
+      // Fetch the user data using the phone number from the API
+      final phoneNumber = await _storage.read(key: 'phone_number');
       if (phoneNumber != null && phoneNumber.isNotEmpty) {
-        _fetchUserData(phoneNumber);
+        await _fetchUserData(phoneNumber);
       }
     }
   }
+
 
 
 
@@ -243,8 +246,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),SizedBox(height: 10),
                               Text(
                                   NumberFormat.currency(
-                                    symbol: 'KES',
-                                  ).format(_userModel?.balance ?? 0),
+                                    symbol: 'KES ',
+                                  ).format(_userModel?.outstandingLoan? ['due_amount'] ?? 0),
                     // Placeholder for loan amount
                                   style: styles.greenBigText
                               ),
@@ -273,12 +276,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            _buildLoanInfoRow('Principal', _userModel?.outstandingLoan?['principal']?.toString() ?? ''),
-                            _buildLoanInfoRow('Interest', _userModel?.outstandingLoan?['interest']?.toString() ?? ''),
-                            _buildLoanInfoRow('Balance', _userModel?.outstandingLoan?['due_amount']?.toString() ?? ''),
-                            _buildLoanInfoRow('Period', _userModel?.outstandingLoan?['duration']?.toString() ?? ''),
-                            _buildLoanInfoRow('Date Borrowed', _userModel?.outstandingLoan?['requested_at']?.toString() ?? ''),
-                            _buildLoanInfoRow('Deadline', _userModel?.outstandingLoan?['due_on']?.toString() ?? '')
+                            _buildLoanInfoRow('Principal', 'KES ${_userModel?.outstandingLoan?['principal']?.toString() ?? ''}'),
+                            _buildLoanInfoRow('Interest', '${_userModel?.outstandingLoan?['interest']?.toString() ?? ''} %'),
+                            _buildLoanInfoRow('Balance', 'KES ${_userModel?.outstandingLoan?['due_amount']?.toString() ?? ''}'),
+                            _buildLoanInfoRow('Period', '${_userModel?.outstandingLoan?['duration']?.toString() ?? ''} Days'),
+                            _buildLoanInfoRow('Date Borrowed', _userModel?.outstandingLoan?['requested_at'] ?? ''),
+                            _buildLoanInfoRow('Deadline', _userModel?.outstandingLoan?['due_on'] ?? '')
                             // Placeholder for deadline
                           ],
                         ),
@@ -327,7 +330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildTab('Profile', Icons.person_2_outlined, () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ProfileScreen(userModel: _userModel!),
+                        MaterialPageRoute(builder: (context) => ProfileScreen(),
                         ),);
                     }),
                     _buildTab('Help', Icons.question_mark, () {
@@ -346,7 +349,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
 
   }
-  Widget _buildLoanInfoRow(String label, String value) {
+  Widget _buildLoanInfoRow(String label,  String value, ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
@@ -363,6 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: styles.greenSmallText
             ),
           ),
+
         ],
       ),
     );
@@ -405,6 +409,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _performLogout() async {
+
+    // Clear the Hive database
+    await Hive.box<UserModel>('userBox').clear();
+
+    // final box = Hive.box<UserModel>('userBox');
+    //   box.clear();
+
+    // clear secure storage
     await _storage.delete(key: 'token');
     await _storage.delete(key: 'phone_number');
 

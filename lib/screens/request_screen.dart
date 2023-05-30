@@ -128,62 +128,62 @@ class _RequestScreenState extends State<RequestScreen> {
 
 
   void _requestLoan(int amount) async {
-    // final token = await _storage.read(key: 'token');
-    //
-    // if (token != null && token.isNotEmpty) {
-    //   final url = Uri.parse('https://dev.hazini.com/ussd/process-loan');
-    //   final headers = {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'};
-    //   final body = json.encode({
-    //     'offer_id': _loanOffers[0].loanProductId,
-    //     'amount': amount,
-    //   });
-    //
-    //   final response = await http.post(
-    //     url,
-    //     headers: headers,
-    //     body: body,
-    //   );
-    //
-    //   if (response.statusCode == 200) {
-    //     showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return AlertDialog(
-    //           title: Text('Success'),
-    //           content: Text('Loan requested successfully.'),
-    //           actions: [
-    //             TextButton(
-    //               child: Text('OK'),
-    //               onPressed: () {
-    //                 Navigator.of(context).pop();
-    //               },
-    //             ),
-    //           ],
-    //         );
-    //       },
-    //     );
-    //   } else {
-    //     showDialog(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return AlertDialog(
-    //           title: Text('Error'),
-    //           content: Text('Failed to request loan. Please try again later.'),
-    //           actions: [
-    //             TextButton(
-    //               child: Text('OK'),
-    //               onPressed: () {
-    //                 Navigator.of(context).pop();
-    //               },
-    //             ),
-    //           ],
-    //         );
-    //       },
-    //     );
-    //   }
-    // } else {
-    //
-    // }
+    final token = await _storage.read(key: 'token');
+
+    if (token != null && token.isNotEmpty) {
+      final url = Uri.parse('https://dev.hazini.com/ussd/process-loan');
+      final headers = {'Authorization': 'Bearer $token', 'Content-Type': 'application/json'};
+      final body = json.encode({
+        'offer_id': _loanOffers[0].loanProductId,
+        'amount': amount,
+      });
+
+      final response = await http.post(
+        url,
+        headers: headers,
+        body: body,
+      );
+
+      if (response.statusCode == 200) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Success'),
+              content: Text('Loan requested successfully.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Error'),
+              content: Text('Failed to request loan. Please try again later.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+
+    }
   }
 
 
@@ -244,51 +244,53 @@ class _RequestScreenState extends State<RequestScreen> {
                         title: Text('Enter Loan amount'),
                         content: TextField(
                           keyboardType: TextInputType.number,
-                          decoration:  InputDecoration(
+                          decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(8),
                             ),
                             labelText: 'Amount',
                           ),
-                          onSubmitted: (value) {
-                            loanAmount = int.parse(value);
+                          onChanged: (value) {
+                            loanAmount = int.tryParse(value) ?? 0;
                           },
                         ),
-                        actions: [TextButton(
-                          child: const Text('Cancel'  ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ), TextButton(
-                          child: const Text('OK'),
-                          onPressed: () {
-                            if (loanAmount != null && loanAmount > 0) { // Check if loanAmount is not null and greater than zero
-                              _requestLoan(loanAmount); // Call the _requestLoan method with the loan amount entered by the user
+                        actions: [
+                          TextButton(
+                            child: const Text('Cancel'),
+                            onPressed: () {
                               Navigator.pop(context);
-                            } else {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("Error"),
-                                    content: Text("Please enter a valid loan amount."),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        child: Text("OK"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            }
-                          },
-                        ),
-
+                            },
+                          ),
+                          TextButton(
+                            child: const Text('OK'),
+                            onPressed: () {
+                              if (loanAmount > 0) {
+                                _requestLoan(loanAmount);
+                                Navigator.pop(context);
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Error"),
+                                      content: Text("Please enter a valid amount."),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: Text("OK"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              }
+                            },
+                          ),
                         ],
                       );
+
                     },
                   );
 

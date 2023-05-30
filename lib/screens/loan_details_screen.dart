@@ -1,15 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hazini/screens/home_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 
 class LoanDetailsScreen extends StatelessWidget {
+  final Map<String, dynamic>? loan;
 
 
   final int loanNumber = 1;
-  final double loanAmount = 5000;
+  // final double loanAmount = 5000;
 
-  const LoanDetailsScreen( {Key? key}) : super(key: key);
+  const LoanDetailsScreen( {Key? key, required this.loan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class LoanDetailsScreen extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Text(
-            'KES ${loanAmount.toString()}, ',
+            'KES ${loan? ['principal'] ?? ''} ',
             style: styles.greenBigText,
           ),
           Divider(height: 32),
@@ -42,7 +44,7 @@ class LoanDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Principal:'),
-                  Text('amount'), // Placeholder for amount
+                  Text('KES ${loan? ['principal'] ?? ''}'), // Placeholder for amount
                 ],
               ),
               SizedBox(height: 10),
@@ -50,7 +52,7 @@ class LoanDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Interest:'),
-                  Text('percentage and amount'), // Placeholder for percentage and amount
+                  Text('${loan? ['interest'] ?? ''} % '), // Placeholder for percentage and amount
                 ],
               ),
               SizedBox(height: 10),
@@ -58,7 +60,7 @@ class LoanDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Total:'),
-                  Text('amount'), // Placeholder for amount
+                  Text('KES ${loan? ['total_amount'] ?? ''}'), // Placeholder for amount
                 ],
               ),
             ],
@@ -75,15 +77,15 @@ class LoanDetailsScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Period:'),
-                  Text('amount of days'), // Placeholder for amount of days
+                  Text('${loan? ['duration'] ?? '0'} days'), // Placeholder for amount of days
                 ],
               ),
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Repayment days:'),
-                  Text('amount of days'), // Placeholder for amount of days
+                  Text('Repayment date:'),
+                  Text('${loan? ['due_on'] ?? ''}'), // Placeholder for amount of days
                 ],
               ),
             ],
@@ -97,17 +99,22 @@ class LoanDetailsScreen extends StatelessWidget {
           Text('Overdue repayment'), // Placeholder for overdue repayment
           Divider(height: 32),
           ExpansionTile(
-
             title: Text(
               'Transaction History',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor), textAlign: TextAlign.start,
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor),
+              textAlign: TextAlign.start,
             ),
             trailing: Icon(Icons.expand_more, color: styles.primaryColor,),
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Center(
-                  child: Text(
+                  child: loan?['paid_amount'] > 0
+                      ? Text(
+                    'Paid amount: ${loan?['paid_amount']}',
+                    style: styles.greenSmallText,
+                  )
+                      : const Text(
                     'Seems like there is no history available for this loan at the moment',
                     style: styles.greenSmallText,
                   ),
@@ -115,8 +122,23 @@ class LoanDetailsScreen extends StatelessWidget {
               ),
             ],
           ),
+
+          // SizedBox(height: 32,),
+          //
+          //
+          // ElevatedButton(onPressed: (){
+          //   //TODO: handle repay
+          //   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+          //
+          //
+          // },
+          //   style: ButtonStyleConstants.secondaryButtonStyle,
+          //   child: const Text("Repay loan", style: styles.purpleText,),),
+          // SizedBox(height: 20,),
+
           ElevatedButton(onPressed: (){
             //TODO: handle close
+            Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
           },
             style: ButtonStyleConstants.secondaryButtonStyle,
               child: const Text("Close", style: styles.purpleText,),)
