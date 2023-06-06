@@ -12,8 +12,7 @@ class _HelpScreenState extends State<HelpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return  Scaffold(
 
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
@@ -104,7 +103,7 @@ class _HelpScreenState extends State<HelpScreen> {
           ],
         ),
       ),
-    ));
+    );
   }
 
   Widget _buildHelpOption(String title) {

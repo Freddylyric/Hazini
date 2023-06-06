@@ -120,8 +120,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return  Scaffold(
           appBar: AppBar(
             backgroundColor: styles.backgroundColor,
             leading: IconButton(
@@ -260,6 +259,6 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
               ),
             ),
           ]),
-        ));
+        );
   }
 }

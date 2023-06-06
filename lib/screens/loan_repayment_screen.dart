@@ -96,8 +96,7 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
     @override
   Widget build(BuildContext context) {
     final userModel = widget.userModel;
-    return SafeArea(
-      child: Scaffold(
+    return  Scaffold(
 
       body: ListView(
         children:[
@@ -172,6 +171,6 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
           ),
         ),
       ]),
-    ));
+    );
   }
 }

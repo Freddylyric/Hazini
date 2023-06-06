@@ -17,8 +17,7 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return  Scaffold(
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,
@@ -57,6 +56,6 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
         },
       ),
-    ));
+    );
   }
 }

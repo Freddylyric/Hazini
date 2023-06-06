@@ -105,8 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
     @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
+    return  Scaffold(
       appBar: AppBar(
         backgroundColor: styles.backgroundColor,
         leading: IconButton(
@@ -218,7 +217,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ]),
-      ));
+      );
   }
 
   String formatNumber(String phone) {

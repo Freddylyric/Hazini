@@ -29,8 +29,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return  Scaffold(
           appBar: AppBar(
             backgroundColor: styles.backgroundColor,
             leading: IconButton(
@@ -178,6 +177,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
             ),
           ),
-        ));
+        );
   }
 }

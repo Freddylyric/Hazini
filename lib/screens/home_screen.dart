@@ -129,8 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (_userModel == null){
       return const Center(child: CircularProgressIndicator());
     }
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
         backgroundColor: styles.backgroundColor,
       appBar: AppBar(
         elevation: 0,
@@ -345,8 +344,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-      ),
-    );
+      );
+
 
   }
   Widget _buildLoanInfoRow(String label,  String value, ) {

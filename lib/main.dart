@@ -27,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
+
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -62,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+
             Container(
               decoration: const BoxDecoration(
                 image: DecorationImage(
@@ -80,7 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
                 children: [
                   ElevatedButton(
-                    onPressed: (){
+                    onPressed: () async {
+                      await Hive.box<UserModel>('userBox').clear();
                       Navigator.push(context, MaterialPageRoute(builder: (context) =>  LoginScreen()));
                     },
                     style: ButtonStyleConstants.secondaryButtonStyle,

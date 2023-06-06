@@ -39,21 +39,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<http.Response> _fetchUserData() async {
     final token = await _storage.read(key: 'token');
-    final phoneNumber = await _storage.read(key: 'phone_number');
+   // final phoneNumber = await _storage.read(key: 'phone_number');
 
-    final url = Uri.parse('https://dev.hazini.com/search-user-by-phone');
+    final url = Uri.parse('https://dev.hazini.com/get-user-details');
     final headers = {'Authorization': 'Bearer $token'};
-    final body = json.encode({'phone_number': phoneNumber});
+   // final body = json.encode({'phone_number': phoneNumber});
 
-    return http.post(url, headers: headers, body: body);
+    return http.get(url, headers: headers, );
   }
 
 
   @override
   Widget build(BuildContext context) {
 
-    return SafeArea(
-        child: Scaffold(
+    return  Scaffold(
 
             body: FutureBuilder<http.Response>(
               future: _fetchUserData(),
@@ -70,12 +69,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 } else  {
                   final response = snapshot.data!;
                   if (response.statusCode == 200){
+                    // print(response.body);
+                    // final Map<String, dynamic> jsonData = json.decode(response.body);
+                    // final userData = jsonData['users'][0];
                     final Map<String, dynamic> jsonData = json.decode(response.body);
-                    final userData = jsonData['users'][0];
+                    final userData = jsonData;
+
+                    // final jsonData = json.decode(response.body);
+                    // final userData = jsonData as Map<String, dynamic>;
 
                     return ListView(
                         padding: EdgeInsets.all(20),
                         children: [
+                          SizedBox(height: 30,),
                           Text( userData['full_names'],
                             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                           ),
@@ -109,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('Email address:'),
-                                  Text(userData['email'] ?? ''), // Placeholder for Email
+                                  Text(userData['email']['String'].toString() ?? ''), // Placeholder for Email
                                 ],
                               ),
                               SizedBox(height: 10),
@@ -117,7 +123,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('National ID'),
-                                  Text(userData['national_id_number'] ?? ''), // Placeholder for ID
+                                  Text(userData['national_id_number'].toString() ?? ''), // Placeholder for ID
                                 ],
                               ),
                             ],
@@ -139,7 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('Company'),
-                                  Text(userData ['company_name'] ?? ''), // Placeholder for name
+                                  Text(userData ['company_name'].toString() ?? ''), // Placeholder for name
                                 ],
                               ),
                               SizedBox(height: 10),
@@ -147,7 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text('Payroll number:'),
-                                  Text(userData['payroll_number']['String'] ?? ''),
+                                  Text(userData['payroll_number']['String'].toString() ?? ''),
                                 ],
                               ),
                             ],
@@ -207,7 +213,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
             )
-        ));
+        );
   }
 
 
