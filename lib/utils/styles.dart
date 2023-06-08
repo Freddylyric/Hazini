@@ -96,6 +96,16 @@ const blackText = TextStyle(
     letterSpacing: 1,
     color: Colors.black
 );
+
+const blackSmallText = TextStyle(
+    fontFamily: 'Guerrer Light',
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    letterSpacing: 0.5,
+    color: Colors.black
+
+);
 const greenSmallText = TextStyle(
     fontFamily: 'Guerrer Light',
     fontSize: 16,
@@ -103,6 +113,7 @@ const greenSmallText = TextStyle(
     height: 1.4,
     letterSpacing: 1,
     color: Color(0xff0B615E)
+
 );
 
 

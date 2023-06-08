@@ -41,6 +41,7 @@ dependencies:
   hive: ^2.2.3
   flutter_secure_storage: ^8.0.0
   phone_numbers_parser: ^7.0.2
+  url_launcher: ^6.1.11
 
 dev_dependencies:
   flutter_test:
