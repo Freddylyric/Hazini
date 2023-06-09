@@ -123,18 +123,7 @@ class LoanDetailsScreen extends StatelessWidget {
             ],
           ),
 
-          // SizedBox(height: 32,),
-          //
-          //
-          // ElevatedButton(onPressed: (){
-          //   //TODO: handle repay
-          //   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
-          //
-          //
-          // },
-          //   style: ButtonStyleConstants.secondaryButtonStyle,
-          //   child: const Text("Repay loan", style: styles.purpleText,),),
-          // SizedBox(height: 20,),
+
 
           ElevatedButton(onPressed: (){
             //TODO: handle close

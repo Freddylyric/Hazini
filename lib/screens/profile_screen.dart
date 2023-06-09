@@ -75,8 +75,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     final Map<String, dynamic> jsonData = json.decode(response.body);
                     final userData = jsonData;
 
-                    // final jsonData = json.decode(response.body);
-                    // final userData = jsonData as Map<String, dynamic>;
+
 
                     return ListView(
                         padding: EdgeInsets.all(20),

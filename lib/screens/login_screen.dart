@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hazini/screens/home_screen.dart';
 import 'package:hazini/screens/password_screen.dart';
-import 'package:hazini/screens/sign_up_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
@@ -48,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 
   Future <void> _login() async {
+    await Hive.box<UserModel>('userBox').clear();
     setState(() {
       _isLoading = true;
       _errorMessage = '';

@@ -146,7 +146,7 @@ class _HelpScreenState extends State<HelpScreen> {
             // Help options
 
                Container(
-                 height: size.height*0.5,
+                 height: size.height*0.45,
                   child: ListView.builder(
                     itemCount: faqCategories.length,
                     itemBuilder: (BuildContext context, int index) {
@@ -196,7 +196,7 @@ class _HelpScreenState extends State<HelpScreen> {
                   },
                   child: Text(
                     'support@hazini.com',
-                    style: styles.greenSmallText,
+                    style: TextStyle(color: Colors.blue, fontSize: 16, fontWeight: FontWeight.w400, decoration: TextDecoration.underline),
                   ),
                 ),
                 SizedBox(height: 16),
@@ -216,20 +216,24 @@ class _HelpScreenState extends State<HelpScreen> {
                       hintText: 'Message',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
-
                       ),
                     ),
                   ),
                 ),
                 SizedBox(height: 20),
-                // Send message button
                 ElevatedButton(
                   onPressed: () {
-                    // Add any logic to send message here
+                    final phoneNumber = '0702364929'; // Replace with the desired phone number
+                    final message = _messageController.text;
+
+                    // sendSMS(phoneNumber, message);
+
+                    launch('sms:0702364929?body=${_messageController.text}');
                   },
                   style: ButtonStyleConstants.primaryButtonStyle,
                   child: Text('Send Message'),
                 ),
+
               ],
             ),
 

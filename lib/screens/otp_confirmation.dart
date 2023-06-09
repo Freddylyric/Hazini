@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hazini/screens/home_screen.dart';
 import 'package:hazini/screens/password_screen.dart';
-import 'package:hazini/screens/sign_up_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:http/http.dart' as http;
 
@@ -75,16 +74,6 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
       );
       if (response.statusCode == 200) {
 
-        // final jsonResponse = json.decode(response.body);
-        // final token = jsonResponse['token'];
-        //
-        //
-        // //save token &number in secure storage
-        // await _storage.write(key: 'token', value: token);
-        // print('otptokensaved');
-        // setState(() {
-        //   _message = jsonResponse['message'];
-        // });
 
 
         // Password reset success, automatically log in the user

@@ -264,7 +264,7 @@ class _RequestScreenState extends State<RequestScreen> {
                           TextButton(
                             child: const Text('OK'),
                             onPressed: () {
-                              if (loanAmount > 0) {
+                              if (loanAmount > 0 && loanAmount <= offer.principal) {
                                 _requestLoan(loanAmount);
                                 Navigator.pop(context);
                               } else {

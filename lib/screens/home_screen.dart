@@ -136,10 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: styles.backgroundColor,
         leading: Padding(
           padding: EdgeInsets.all(10),
-          child: CircleAvatar(
-            backgroundColor: styles.primaryColor,
-            child: Text(_userModel!.name.substring(0, 2),),
+          child: GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) =>  ProfileScreen()));
+            },
+            child: CircleAvatar(
+              backgroundColor: styles.primaryColor,
+              child: Text(_userModel!.name.substring(0, 2),),
 
+            ),
           ),),
         title: Text('Hi there ${_userModel?.name},', style: styles.greenBigText,),
         actions: [
