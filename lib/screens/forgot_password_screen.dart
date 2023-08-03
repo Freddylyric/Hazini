@@ -20,11 +20,15 @@ class _PasswordScreenState extends State<PasswordScreen> {
   TextEditingController _phoneNumberController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   final _storage = const FlutterSecureStorage();
+  bool _isLoading = false;
 
 
 
 
   Future<void> _requestOTP() async {
+    setState(() {
+      _isLoading = true;
+    });
 
     final phone = formatNumber(_phoneNumberController.text);
     // Validate the phone number
@@ -94,6 +98,10 @@ class _PasswordScreenState extends State<PasswordScreen> {
         );
       }
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
     @override
@@ -146,9 +154,11 @@ class _PasswordScreenState extends State<PasswordScreen> {
                               SizedBox(height: 32,),
 
                               ElevatedButton(
-                                onPressed: _requestOTP,
+                                onPressed: _isLoading ? null: _requestOTP,
                                 style: ButtonStyleConstants.primaryButtonStyle,
-                                child: Text('Request OTP'),
+                                child: _isLoading
+                                    ? CircularProgressIndicator()
+                                    : Text('Request OTP'),
                               ),
                             ])
                     )

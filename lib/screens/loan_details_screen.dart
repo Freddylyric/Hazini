@@ -29,7 +29,7 @@ class LoanDetailsScreen extends StatelessWidget {
           ),
           SizedBox(height: 20),
           Text(
-            'KES ${loan? ['principal'] ?? ''} ',
+            'KES ${loan? ['principal'].toString() ?? 0.00} ',
             style: styles.greenBigText,
           ),
           Divider(height: 32),
@@ -109,7 +109,7 @@ class LoanDetailsScreen extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16),
                 child: Center(
-                  child: loan?['paid_amount'] > 0
+                  child: (double.tryParse(loan?['paid_amount'] ?? '0') ?? 0) > 0
                       ? Text(
                     'Paid amount: ${loan?['paid_amount']}',
                     style: styles.greenSmallText,
@@ -120,6 +120,7 @@ class LoanDetailsScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
             ],
           ),
 

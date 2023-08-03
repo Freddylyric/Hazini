@@ -7,22 +7,22 @@ part 'user_model.g.dart';
 @HiveType(typeId: 0)
 class UserModel extends HiveObject {
   @HiveField(0)
-  String name;
+  String? name;
 
   @HiveField(1)
   String? email;
 
   @HiveField(2)
-  int balance;
+  String? balance;
 
   @HiveField(3)
-  int? salary;
+  String? salary;
 
   @HiveField(4)
   String? kraPin;
 
   @HiveField(5)
-  int? maxLoan;
+  String? maxLoan;
 
   @HiveField(6)
   int? status;
@@ -40,16 +40,16 @@ class UserModel extends HiveObject {
   Map<String, dynamic>? outstandingLoan;
 
   UserModel({
-    required this.name,
-    required this.email,
-    required this.balance,
-    required this.salary,
-    required this.kraPin,
-    required this.maxLoan,
-    required this.status,
-    required this.companyId,
-    required this.canBorrow,
-    required this.cannotBorrowReason,
-    required this.outstandingLoan,
+     this.name,
+     this.email,
+    this.balance,
+     this.salary,
+     this.kraPin,
+     this.maxLoan,
+     this.status,
+     this.companyId,
+     this.canBorrow,
+     this.cannotBorrowReason,
+     this.outstandingLoan,
   });
 }

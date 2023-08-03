@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hazini/screens/home_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 
 import '../adapters/user_model.dart';
 
@@ -21,6 +23,7 @@ class LoanRepaymentScreen extends StatefulWidget {
 class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
   double? _repayAmount;
   final _storage = const FlutterSecureStorage();
+
 
   bool _isProcessing = false;
 
@@ -53,7 +56,9 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
                 TextButton(
                   child: const Text('OK'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    //Navigator.of(context).pop();
+
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
                   },
                 ),
               ],
@@ -96,6 +101,15 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
     @override
   Widget build(BuildContext context) {
     final userModel = widget.userModel;
+
+    double amount = double.tryParse(widget.userModel.outstandingLoan?['due_amount'] ?? '0') ?? 0;
+
+    // // Format the amount as currency
+    // String formattedAmount = NumberFormat.currency(
+    //   symbol: 'KES ',
+    // ).format(amount);
+
+
     return  Scaffold(
 
       body: ListView(
@@ -109,7 +123,9 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
               const SizedBox(height: 20,),
               const Text('AMOUNT', style: styles.greenBigText),
               const SizedBox(height: 20,),
-              Text('Your loan is KES ${widget.userModel.outstandingLoan? ['due_amount']}', style: styles.greenSmallText,),
+              Text('Your loan is KES ${NumberFormat.currency(symbol: '', decimalDigits: 2,).format(double.tryParse(userModel.outstandingLoan? ['due_amount'] ?? '0.0')?? 0.00) }', style: styles.greenSmallText),
+
+
               const SizedBox(height: 20),
               const Text('How much would you like to repay?', style: styles.blackText,),
               const SizedBox(height: 10,),
@@ -137,8 +153,8 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
               ElevatedButton(
                 onPressed: () {
                   if (_isProcessing) {
-                    return null; // Disable the button while processing
-                  } else if (_repayAmount != null && _repayAmount! > 0 && _repayAmount! <= userModel.outstandingLoan! ['due_amount']) {
+                    return null; // Disable the button while processing && _repayAmount! <= amount
+                  } else if (_repayAmount != null && _repayAmount! > 0 ) {
                     _makeRepayment();
                   } else {
                     showDialog(

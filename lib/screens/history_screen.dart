@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hazini/utils/styles.dart' as styles;
+import 'package:intl/intl.dart';
 
 import '../adapters/user_model.dart';
 import 'loan_details_screen.dart';
@@ -35,7 +36,12 @@ class _HistoryScreenState extends State<HistoryScreen> {
           return Card(
             margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: ListTile(
-              title: Text('KES ${widget.userModel.outstandingLoan? ['due_amount']}', style: styles.greenSmallText,), // Placeholder for loan
+              title: Text(
+                NumberFormat.currency(
+                  symbol: 'KES ',
+                ).format(double.tryParse(widget.userModel.outstandingLoan?['due_amount'] ?? '0')?? 0.00),
+                style: styles.greenSmallText,
+              ), // Placeholder for loan
               subtitle: Text('${widget.userModel.outstandingLoan? ['requested_at']}', style: styles. greenSmallText,), // Placeholder
 
 

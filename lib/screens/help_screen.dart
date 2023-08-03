@@ -146,8 +146,9 @@ class _HelpScreenState extends State<HelpScreen> {
             // Help options
 
                Container(
-                 height: size.height*0.45,
+                 height: size.height*0.55,
                   child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: faqCategories.length,
                     itemBuilder: (BuildContext context, int index) {
                       final category = faqCategories[index];
@@ -179,7 +180,7 @@ class _HelpScreenState extends State<HelpScreen> {
               thickness: 2,
 
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 5),
             // Contact us
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,7 +189,7 @@ class _HelpScreenState extends State<HelpScreen> {
                 Text(
                   'Contact us',
                   style: styles.greenBigText, textAlign: TextAlign.start,
-                ),SizedBox(height: 16),
+                ),SizedBox(height: 5),
                 // Email
                 GestureDetector(
                   onTap: () {
@@ -199,13 +200,13 @@ class _HelpScreenState extends State<HelpScreen> {
                     style: TextStyle(color: Colors.blue, fontSize: 16, fontWeight: FontWeight.w400, decoration: TextDecoration.underline),
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 // Send message
                 Text(
                   'Send us a message',
                   style: styles.greenSmallText
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: 10),
                 // Message input field
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -220,7 +221,7 @@ class _HelpScreenState extends State<HelpScreen> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () {
                     final phoneNumber = '0702364929'; // Replace with the desired phone number

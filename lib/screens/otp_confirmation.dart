@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hazini/screens/home_screen.dart';
-import 'package:hazini/screens/password_screen.dart';
+import 'package:hazini/screens/forgot_password_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:http/http.dart' as http;
 
@@ -26,6 +26,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
   final _formKey = GlobalKey<FormState>();
   bool _obscurePin = true;
   bool _obscureConfirmPin = true;
+  bool _isVerifying = false;
 
   final _storage = const FlutterSecureStorage();
   late String storedValue;
@@ -52,7 +53,12 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
     super.dispose();
   }
 
-  Future<void> _login() async {
+  Future<void> _changePassword() async {
+    setState(() {
+      _isVerifying = true;
+    });
+
+
     final pin = _pinController.text;
     final pin2 = _confirmPinController.text;
     final otp = _otpController.text;
@@ -79,9 +85,11 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
         // Password reset success, automatically log in the user
         // logic to save the user session or token
         // and navigate to the home screen
-        Navigator.push(
+        Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => LoginScreen()),
+          MaterialPageRoute(
+            builder: (context) => LoginScreen(),
+          ),
         );
       } else {
         // Password reset failed, show an error dialog
@@ -104,6 +112,11 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
         );
       }
     }
+
+
+    setState(() {
+      _isVerifying = false;
+    });
   }
 
 
@@ -220,21 +233,23 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
                     const SizedBox(height: 30),
 // Log in button
                     ElevatedButton(
-                      onPressed: () {
-                        // if (_formKey.currentState!.validate()) {
-                         _login();
+                      onPressed: _isVerifying ? null : () {
+                         if (_formKey.currentState!.validate()) {
+                         _changePassword();
                           // Add login logic here
-                        // }
+                         }
                       },
                       style: ButtonStyleConstants.primaryButtonStyle,
-                      child: Text('RESET PIN'),
+                      child: _isVerifying
+                        ? CircularProgressIndicator()
+                      : Text('RESET PIN'),
                     ),
 
                     const SizedBox(height: 30),
                     // Forgot PIN text
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordScreen()));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => PasswordScreen()));
                       },
                       child: const Text(
                         'Request OTP',

@@ -11,7 +11,7 @@ final Color backgroundColor = Color(0xffCED9F7);
 
 class ButtonStyleConstants {
 
-  static const double buttonHeight = 60.0;
+  static const double buttonHeight = 50.0;
   static const double buttonWidth = 350.0;
   static const double smallButtonHeight = 50.0;
   static const double smallButtonWidth = 100.0;
@@ -53,7 +53,7 @@ class ButtonStyleConstants {
 
 const greenBigText = TextStyle(
   fontFamily: 'Guerrer Light',
-  fontSize: 24,
+  fontSize: 22,
   fontWeight: FontWeight.w500,
   height: 1.23,
   letterSpacing: 1,
