@@ -29,7 +29,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     _getPhoneNumber();
     super.initState();
-
   }
 
   Future<void> _getPhoneNumber() async {
@@ -39,92 +38,139 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<http.Response> _fetchUserData() async {
     final token = await _storage.read(key: 'token');
-   // final phoneNumber = await _storage.read(key: 'phone_number');
+    // final phoneNumber = await _storage.read(key: 'phone_number');
 
     final url = Uri.parse('https://dev.hazini.com/get-user-details');
     final headers = {'Authorization': 'Bearer $token'};
-   // final body = json.encode({'phone_number': phoneNumber});
+    // final body = json.encode({'phone_number': phoneNumber});
 
-    return http.get(url, headers: headers, );
+    return http.get(url, headers: headers,);
   }
 
 
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
 
-    return  Scaffold(
-
-            body: FutureBuilder<http.Response>(
-              future: _fetchUserData(),
-              builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot){
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-
-                } else if (snapshot.hasError) {
-                  return Center(
-                    child: Text('Error: ${snapshot.error}'),
-                  );
-                } else  {
-                  final response = snapshot.data!;
-                  if (response.statusCode == 200){
-                    // print(response.body);
-                    // final Map<String, dynamic> jsonData = json.decode(response.body);
-                    // final userData = jsonData['users'][0];
-                    final Map<String, dynamic> jsonData = json.decode(response.body);
-                    final userData = jsonData;
+        body: FutureBuilder<http.Response>(
+          future: _fetchUserData(),
+          builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              final response = snapshot.data!;
+              if (response.statusCode == 200) {
+                // print(response.body);
+                // final Map<String, dynamic> jsonData = json.decode(response.body);
+                // final userData = jsonData['users'][0];
+                final Map<String, dynamic> jsonData = json.decode(response.body);
+                final userData = jsonData;
 
 
-
-                    return ListView(
-                        padding: EdgeInsets.all(20),
+                return ListView(
+                    padding: EdgeInsets.all(20),
+                    children: [
+                      SizedBox(height: 30,),
+                      Text(userData['full_names'],
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 20),
+                      Text(
+                        'YOUR PROFILE',
+                        style: styles.greenBigText,
+                      ),
+                      SizedBox(height: 10),
+                      Divider(
+                        color: Colors.grey,
+                        thickness: 1,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Your identity details',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor),
+                      ),
+                      SizedBox(height: 20),
+                      Column(
                         children: [
-                          SizedBox(height: 30,),
-                          Text( userData['full_names'],
-                            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 20),
-                          Text(
-                            'YOUR PROFILE',
-                            style: styles.greenBigText,
-                          ),
-                          SizedBox(height: 10),
-                          Divider(
-                            color: Colors.grey,
-                            thickness: 1,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Your identity details',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor),
-                          ),
-                          SizedBox(height: 20),
-                          Column(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('Full names:'),
-                                  Text(userData['full_names']), // Placeholder for name
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('Email address:'),
-                                  Text(userData['email']['String'].toString() ?? ''), // Placeholder for Email
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('National ID'),
-                                  Text(userData['national_id_number'].toString() ?? ''), // Placeholder for ID
-                                ],
-                              ),
+                              Text('Full names:'),
+                              Text(userData['full_names']), // Placeholder for name
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Email address:'),
+                              Text(userData['email']['String'].toString() ?? ''), // Placeholder for Email
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('National ID'),
+                              Text(userData['national_id_number'].toString() ?? ''), // Placeholder for ID
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Divider(
+                        color: Colors.grey,
+                        thickness: 1,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Your employment details',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor),
+                      ),
+                      SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Company'),
+                              Text(userData ['company_name'].toString() ?? ''), // Placeholder for name
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text('Payroll number:'),
+                              Text(userData['payroll_number']['String'].toString() ?? ''),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10),
+                      Divider(
+                        color: Colors.grey,
+                        thickness: 1,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Your mobile money details',
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor),
+                      ),
+                      SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(storedValue ?? '', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor)),
+                              Text('Verified'), // Placeholder for name
                             ],
                           ),
                           SizedBox(height: 10),
@@ -133,100 +179,49 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             thickness: 1,
                           ),
                           SizedBox(height: 10),
-                          Text(
-                            'Your employment details',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor),
-                          ),
-                          SizedBox(height: 20),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('Company'),
-                                  Text(userData ['company_name'].toString() ?? ''), // Placeholder for name
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text('Payroll number:'),
-                                  Text(userData['payroll_number']['String'].toString() ?? ''),
-                                ],
-                              ),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          Divider(
-                            color: Colors.grey,
-                            thickness: 1,
-                          ),
-                          SizedBox(height: 10),
-                          Text(
-                            'Your mobile money details',
-                            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor),
-                          ),
-                          SizedBox(height: 20),
-                          Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(storedValue ?? '', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: styles.primaryColor)),
-                                  Text('Verified'), // Placeholder for name
-                                ],
-                              ),
-                              SizedBox(height: 10),
-                              Divider(
-                                color: Colors.grey,
-                                thickness: 1,
-                              ),
-                              SizedBox(height: 10),
-                            ],
+                        ],
 
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              // Perform logout actions here
-                              _performLogout();
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Perform logout actions here
+                          _performLogout();
 
-                              // Add logout logic here
-                            },
-                            child: const Text(
-                              'Logout',
-                              style: styles.purpleUnderlinedText,
-                            ),
-                          ),
-                        ]
-                    );
-                  } else {
-                    return Center(
-                      child: Text('Failed to load user data. Status code: ${response.statusCode}'),
-                    );
-                  }
+                          // Add logout logic here
+                        },
+                        child: const Text(
+                          'Logout',
+                          style: styles.purpleUnderlinedText,
+                        ),
+                      ),
+                    ]
+                );
+              } else {
+                return Center(
+                  child: Text('Failed to load user data. Status code: ${response.statusCode}'),
+                );
+              }
+            }
+          },
 
 
-                }
-              },
-
-
-            )
-        );
+        )
+    );
   }
 
 
   void _performLogout() async {
-
     // Clear the Hive database
     await Hive.box<UserModel>('userBox').clear();
 
     await _storage.delete(key: 'token');
     await _storage.delete(key: 'phone_number');
 
-    Navigator.pushReplacement(
+    // Navigate to the landing screen and remove all previous screens from the stack
+    Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => MyHomePage()),
+          (route) => false, // This line removes all the previous routes from the stack
     );
   }
 }

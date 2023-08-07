@@ -82,8 +82,15 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   ElevatedButton(
                     onPressed: () async {
+
                       await Hive.box<UserModel>('userBox').clear();
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LoginScreen()));
+                     // Navigator.pop(context);
+
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                            (route) => false, // This line removes all the previous routes from the stack
+                      );
                     },
                     style: ButtonStyleConstants.secondaryButtonStyle,
                     child: Row(

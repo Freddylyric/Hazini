@@ -80,10 +80,13 @@ class _LoginScreenState extends State<LoginScreen> {
         await _storage.write(key: 'phone_number', value: phoneNumber);
         print('token saved');
 
-        Navigator.pushReplacement(
+        //Navigator.pop(context);
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => HomeScreen()),
+              (route) => false, // This line removes all the previous routes from the stack
         );
+
       } else if (response.statusCode == 401) {
         setState(() {
           _errorMessage = 'Invalid credentials. Please try again';

@@ -50,7 +50,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
         if (response.statusCode == 200) {
           // OTP request success, navigate to the OTP confirmation screen
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => OTPConfirmScreen(),
