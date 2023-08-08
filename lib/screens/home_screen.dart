@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (response.statusCode == 200) {
       final jsonResponse = json.decode(response.body);
-      print(response.body);
+
 
       // Create a UserModel object with the response data
       UserModel user = UserModel(
@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // Save the user model to the Hive database
       final box = Hive.box<UserModel>('userBox');
       box.add(user);
-      print(user);
+
 
       // Update the state with the fetched user data
       setState(() {

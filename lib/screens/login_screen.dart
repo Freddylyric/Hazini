@@ -68,8 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
         }),
       );
 
-      print(response.body);
-      print('loginokay');
+
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
@@ -78,7 +77,7 @@ class _LoginScreenState extends State<LoginScreen> {
         //save token &number in secure storage
         await _storage.write(key: 'token', value: token);
         await _storage.write(key: 'phone_number', value: phoneNumber);
-        print('token saved');
+
 
         //Navigator.pop(context);
         Navigator.pushAndRemoveUntil(

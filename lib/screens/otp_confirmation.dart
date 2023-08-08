@@ -63,7 +63,7 @@ class _OTPConfirmScreenState extends State<OTPConfirmScreen> {
     final pin2 = _confirmPinController.text;
     final otp = _otpController.text;
 
-    print(storedValue);
+
 
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();

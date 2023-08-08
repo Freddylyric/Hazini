@@ -34,7 +34,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
     // Validate the phone number
     if (_formKey.currentState!.validate()) {
       await _storage.write(key: 'phone_number', value: phone);
-      print(phone);
+
       // Send the OTP request
       try {
         final url = Uri.parse('https://dev.hazini.com/ussd/forgot-password');
@@ -46,7 +46,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           }),
 
         );
-        print(response.body);
+
 
         if (response.statusCode == 200) {
           // OTP request success, navigate to the OTP confirmation screen
@@ -77,7 +77,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
           );
         }
       } catch (e) {
-        print('Error');
+
         // Handle and show an error dialog
         showDialog(
           context: context,

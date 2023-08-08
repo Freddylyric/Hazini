@@ -127,8 +127,7 @@ class _RequestScreenState extends State<RequestScreen> {
   }
 
   void _requestLoan(int amount, int offerId) async {
-    print(amount);
-    print(offerId);
+
     final token = await _storage.read(key: 'token');
 
     if (token != null && token.isNotEmpty) {
@@ -145,7 +144,7 @@ class _RequestScreenState extends State<RequestScreen> {
         body: body,
       );
 
-      print('Loan Request Response: ${response.statusCode} - ${response.body}');
+
 
       if (response.statusCode == 200) {
         showDialog(

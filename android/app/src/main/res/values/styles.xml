@@ -15,4 +15,9 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+
+    <string name="default_notification_channel_id">HaziniFCM</string>
+    <string name="default_notification_channel_name">FCMNotifs</string>
+    <string name="default_notification_channel_description">Firebase Notifications</string>
+
 </resources>

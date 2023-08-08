@@ -65,10 +65,10 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
             );
           },
         );
-        print('stk sent');
+
 
       } else {
-        print('Repayment request failed with status code: ${response.statusCode}');
+
         //ToDo: Repayment request failed, handle the error
         showDialog(
           context: context,

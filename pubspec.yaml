@@ -43,6 +43,9 @@ dependencies:
   phone_numbers_parser: ^7.0.2
   url_launcher: ^6.1.11
   rename: ^2.1.1
+  firebase_core: ^2.15.0
+  firebase_crashlytics: ^3.3.4
+  firebase_messaging: ^14.6.5
 
 dev_dependencies:
   flutter_test:

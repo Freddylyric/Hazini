@@ -244,15 +244,7 @@ class _HelpScreenState extends State<HelpScreen> {
     );
   }
 
-  // Widget _buildHelpOption(String title) {
-  //   return ListTile(
-  //     title: Text(title),
-  //     trailing: Icon(Icons.arrow_forward_ios),
-  //     onTap: () {
-  //       // Add help option navigation logic here
-  //     },
-  //   );
-  // }
+
 }
 
 
