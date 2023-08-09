@@ -21,7 +21,7 @@ class _RequestScreenState extends State<RequestScreen> {
   final _storage = const FlutterSecureStorage();
   late String storedValue;
   late String storedToken;
-  final  _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController _amountController = TextEditingController();
 
   int? _loanLimit;
@@ -127,7 +127,6 @@ class _RequestScreenState extends State<RequestScreen> {
   }
 
   void _requestLoan(int amount, int offerId) async {
-
     final token = await _storage.read(key: 'token');
 
     if (token != null && token.isNotEmpty) {
@@ -144,8 +143,6 @@ class _RequestScreenState extends State<RequestScreen> {
         body: body,
       );
 
-
-
       if (response.statusCode == 200) {
         showDialog(
           context: context,
@@ -158,7 +155,7 @@ class _RequestScreenState extends State<RequestScreen> {
                   child: Text('OK'),
                   onPressed: () {
                     //Navigator.of(context).pop();
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
                   },
                 ),
               ],
@@ -166,10 +163,8 @@ class _RequestScreenState extends State<RequestScreen> {
           },
         );
       } else {
-
         final jsonResponse = json.decode(response.body);
         final errorMessage = jsonResponse['message'] as String;
-
 
         showDialog(
           context: context,
@@ -199,153 +194,192 @@ class _RequestScreenState extends State<RequestScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: styles.secondaryColor,),
+          icon: Icon(
+            Icons.arrow_back,
+            color: styles.secondaryColor,
+          ),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
         backgroundColor: styles.backgroundColor,
-        title: Text('Request a Loan', style: styles.greenBigText,),
+        title: Text(
+          'Request a Loan',
+          style: styles.greenBigText,
+        ),
       ),
       body: _loanLimit == null
           ? Center(
-        child: CircularProgressIndicator(),
-      )
+              child: CircularProgressIndicator(),
+            )
           : SingleChildScrollView(
-            child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Your loan limit is ${NumberFormat.currency(symbol: 'KES ').format(_loanLimit!)}',
-                style: styles.greenBigText,
-              ),
-              SizedBox(height: 16),
-              Text('Please enter the amount you wish to borrow:',style: blackText,),
-              SizedBox(height: 8),
-              TextField(
-                controller: _amountController,
-                keyboardType: TextInputType.number,
-                onChanged: (value) {
-                  setState(() {
-                    _requestedAmount = int.tryParse(_amountController.text) ?? 0;
-                  });
-                },
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Amount',
-                ),
-              ),
-              SizedBox(height: 16),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (_requestedAmount > 0 && _requestedAmount <= _loanLimit!) {
-                      _fetchLoanOffers(storedToken, _requestedAmount);
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text("Error"),
-                            content: Text("Please enter a valid amount within your loan limit."),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text("OK"),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  },
-                  child: Text('Fetch Loan Offers'), style: ButtonStyleConstants.primaryButtonStyle,
-                ),
-              ),
-              SizedBox(height: 16),
-              _loanOffers.isEmpty
-                  ? Text(
-                'No loan offers found',
-                style: styles.greenBigText,
-              )
-                  : Container(
-                height: 400,
-                width: double.infinity,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Select a loan offer", style: blackText,),
-                    SizedBox(height: 5,),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: _loanOffers.length,
-                        itemBuilder: (context, index) {
-                          LoanOffer offer = _loanOffers[index];
-                          return Card(
-                            child: ExpansionTile(
-                              title: Text('Loan Product ID: ${offer.loanProductId}', style: styles.blackText,),
-                              subtitle: Text('Principal: ${NumberFormat.currency(symbol: 'KES').format(offer.principal)}', style: styles.blackText,),
-                              initiallyExpanded: false,
+                    Text(
+                      'Your loan limit is ${NumberFormat.currency(symbol: 'KES ').format(_loanLimit!)}',
+                      style: styles.greenBigText,
+                    ),
+                    SizedBox(height: 16),
+                    Text(
+                      'Please enter the amount you wish to borrow:',
+                      style: blackText,
+                    ),
+                    SizedBox(height: 8),
+                    TextField(
+                      controller: _amountController,
+                      keyboardType: TextInputType.number,
+                      onChanged: (value) {
+                        setState(() {
+                          _requestedAmount = int.tryParse(_amountController.text) ?? 0;
+                        });
+                        if (_requestedAmount > 0 && _requestedAmount <= _loanLimit!) {
+                          _fetchLoanOffers(storedToken, _requestedAmount);
+                        }
+                      },
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: 'Amount',
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_requestedAmount > 0 && _requestedAmount <= _loanLimit!) {
+                            _fetchLoanOffers(storedToken, _requestedAmount);
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: Text("Error"),
+                                  content: Text("Please enter a valid amount within your loan limit."),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text("OK"),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          }
+                        },
+                        child: Text('Fetch Loan Offers'),
+                        style: ButtonStyleConstants.primaryButtonStyle,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                    _loanOffers.isEmpty
+                        ? Center(
+                          child: Text(
+                              'No loan offers found',
+                              style: styles.greenSmallText,
+                            ),
+                        )
+                        : Container(
+                            height: 400,
+                            width: double.infinity,
+                            child: Column(
                               children: [
-                                ListTile(
-                                  title: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text('Interest Rate: ${offer.interestRate} %', style: styles.greenSmallText),
-                                      SizedBox(height: 5,),
-                                      Text('Duration: ${offer.duration} days', style: styles.greenSmallText),
-                                      SizedBox(height: 5,),
-                                      Text('Due On: ${offer.dueOn}', style: styles.greenSmallText),
-                                      SizedBox(height: 5,),
-                                      Text('Due Amount: ${NumberFormat.currency(symbol: 'KES').format(offer.dueAmount)}', style: styles.greenSmallText),
-                                      SizedBox(height: 5,),
-                                      Text('Number of Installments: ${offer.numberOfInstallments}', style: styles.greenSmallText),
-                                      SizedBox(height: 5,),
-                                    ],
-                                  ),
-                                  onTap: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text('Confirm Loan Request'),
-                                          content: Text('Are you sure you want to request this loan?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
+                                Text(
+                                  "Select a loan offer",
+                                  style: greenSmallText,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: _loanOffers.length,
+                                    itemBuilder: (context, index) {
+                                      LoanOffer offer = _loanOffers[index];
+                                      return Card(
+                                        child: ExpansionTile(
+                                          title: Text(
+                                            'Loan Product ID: ${offer.loanProductId}',
+                                            style: styles.blackText,
+                                          ),
+                                          subtitle: Text(
+                                            'Principal: ${NumberFormat.currency(symbol: 'KES').format(offer.principal)}',
+                                            style: styles.blackText,
+                                          ),
+                                          initiallyExpanded: false,
+                                          children: [
+                                            ListTile(
+                                              title: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text('Interest Rate: ${offer.interestRate} %', style: styles.greenSmallText),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text('Duration: ${offer.duration} days', style: styles.greenSmallText),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text('Due On: ${offer.dueOn}', style: styles.greenSmallText),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text('Due Amount: ${NumberFormat.currency(symbol: 'KES').format(offer.dueAmount)}', style: styles.greenSmallText),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                  Text('Number of Installments: ${offer.numberOfInstallments}', style: styles.greenSmallText),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
+                                                ],
+                                              ),
+                                              onTap: () {
+                                                showDialog(
+                                                  context: context,
+                                                  builder: (BuildContext context) {
+                                                    return AlertDialog(
+                                                      title: Text('Confirm Loan Request'),
+                                                      content: Text('Are you sure you want to request this loan?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          child: Text(
+                                                            "Cancel",
+                                                            style: TextStyle(color: Colors.red),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            _requestLoan(_requestedAmount, offer.loanProductId);
+                                                            Navigator.of(context).pop();
+                                                          },
+                                                          child: Text("Request"),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
                                               },
-                                              child: Text("Cancel", style: TextStyle(color: Colors.red),),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                _requestLoan(_requestedAmount, offer.loanProductId );
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: Text("Request"),
                                             ),
                                           ],
-                                        );
-                                      },
-                                    );
-                                  },
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ],
                             ),
-                          );
-                        },
-                      ),
-                    ),
+                          ),
                   ],
                 ),
               ),
-            ],
-        ),
-      ),
-          ),
+            ),
     );
   }
 }

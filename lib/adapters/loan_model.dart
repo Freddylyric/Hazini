@@ -4,7 +4,7 @@ class LoanOffer {
   final int duration;
   final int principal;
   final String dueOn;
-  final double dueAmount;
+  final num dueAmount;
   final int numberOfInstallments;
 
   LoanOffer({
