@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hazini/screens/home_screen.dart';
+import 'package:hazini/screens/new%20screens/home_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 import 'package:http/http.dart' as http;
@@ -127,7 +127,7 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
 
 
               const SizedBox(height: 20),
-              const Text('How much would you like to repay?', style: styles.blackText,),
+              const Text('How much would you like to repay?', ),
               const SizedBox(height: 10,),
               const Divider(
                 color: Colors.grey,

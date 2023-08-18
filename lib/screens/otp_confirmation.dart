@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:hazini/screens/home_screen.dart';
+import 'package:hazini/screens/new%20screens/home_screen.dart';
 import 'package:hazini/screens/forgot_password_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:http/http.dart' as http;

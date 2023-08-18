@@ -1,6 +1,7 @@
 
 
 
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -22,8 +23,13 @@ class ButtonStyleConstants {
   static const Color secondaryColor = Color(0xffCED9F7);
 
   static final ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(
-    backgroundColor: primaryColor,
+    backgroundColor: Colors.transparent,
     padding: buttonPadding,
+
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    shadowColor: Colors.transparent,
+
+
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(borderRadius),
     ),
@@ -60,6 +66,15 @@ const greenBigText = TextStyle(
   color: Color(0xff0B615E),
 );
 
+final greenLargeText = GoogleFonts.montserrat(
+
+    fontSize: 16,
+    fontWeight: FontWeight.w700,
+    height: 1.4,
+    letterSpacing: 1,
+    color: Color(0xff009BA5)
+);
+
 const purpleText = TextStyle(
     fontFamily: 'Guerrer Light',
     fontSize: 16,
@@ -88,14 +103,24 @@ const whiteText = TextStyle(
     color: Colors.white
 );
 
-const blackText = TextStyle(
-    fontFamily: 'Guerrer Light',
-    fontSize: 16,
+final blackText = GoogleFonts.montserrat(
+
+    fontSize: 15,
     fontWeight: FontWeight.w500,
     height: 1.4,
     letterSpacing: 1,
-    color: Colors.black
+    color: Color(0xff5C5C5C)
 );
+
+
+final blackGreyText = GoogleFonts.montserrat(
+    fontSize: 15,
+    fontWeight: FontWeight.w400,
+    height: 1.4,
+    letterSpacing: 1,
+    color: Color(0xff5C5C5C)
+);
+
 
 const blackSmallText = TextStyle(
     fontFamily: 'Guerrer Light',

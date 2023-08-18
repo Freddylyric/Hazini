@@ -7,7 +7,7 @@ import 'package:hazini/adapters/loan_model.dart';
 import 'package:intl/intl.dart';
 
 import '../utils/styles.dart';
-import 'home_screen.dart';
+import 'new screens/home_screen.dart';
 
 class RequestScreen extends StatefulWidget {
   const RequestScreen({Key? key}) : super(key: key);
@@ -282,7 +282,10 @@ class _RequestScreenState extends State<RequestScreen> {
                               style: styles.greenSmallText,
                             ),
                         )
-                        : Container(
+                        :
+
+
+                    Container(
                             height: 400,
                             width: double.infinity,
                             child: Column(
