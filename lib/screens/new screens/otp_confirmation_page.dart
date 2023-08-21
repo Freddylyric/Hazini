@@ -156,11 +156,11 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
                               borderRadius: BorderRadius.circular(10),
                               boxShadow:  [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  blurRadius: 7,
-
-
-                                )
+                                  color: Color(0x2E2E2E40),
+                                  offset: Offset(1, 3),
+                                  blurRadius: 3,
+                                  spreadRadius: 1,
+                                ),
                               ],
                               color: Colors.white,
                             ),
@@ -195,11 +195,11 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
                               borderRadius: BorderRadius.circular(10),
                               boxShadow:  [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  blurRadius: 7,
-
-
-                                )
+                                  color: Color(0x2E2E2E40),
+                                  offset: Offset(1, 3),
+                                  blurRadius: 3,
+                                  spreadRadius: 1,
+                                ),
                               ],
                               color: Colors.white,
                             ),
@@ -245,11 +245,11 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
                               borderRadius: BorderRadius.circular(10),
                               boxShadow:  [
                                 BoxShadow(
-                                  color: Colors.grey.withOpacity(0.5),
-                                  blurRadius: 7,
-
-
-                                )
+                                  color: Color(0x2E2E2E40),
+                                  offset: Offset(1, 3),
+                                  blurRadius: 3,
+                                  spreadRadius: 1,
+                                ),
                               ],
                               color: Colors.white,
                             ),

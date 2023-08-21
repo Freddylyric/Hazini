@@ -84,13 +84,13 @@ const purpleText = TextStyle(
     color: Color(0xffB504AF)
 );
 
-const purpleUnderlinedText = TextStyle(
-    fontFamily: 'Guerrer Light',
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
+final greyUnderlinedText = GoogleFonts.montserrat(
+
+    fontSize: 13,
+    fontWeight: FontWeight.w700,
     height: 1.4,
     letterSpacing: 1,
-    color: Color(0xffB504AF),
+    color: Color(0xff5C5C5C),
     decoration: TextDecoration.underline
 );
 
@@ -122,22 +122,28 @@ final blackGreyText = GoogleFonts.montserrat(
 );
 
 
-const blackSmallText = TextStyle(
-    fontFamily: 'Guerrer Light',
-    fontSize: 16,
+final blackSmallText = GoogleFonts.montserrat(
+
+    fontSize: 14,
     fontWeight: FontWeight.w400,
-    height: 1.4,
-    letterSpacing: 0.5,
-    color: Colors.black
+
+    color: Color(0xff606060),
 
 );
-const greenSmallText = TextStyle(
-    fontFamily: 'Guerrer Light',
+
+final blackBigText = GoogleFonts.montserrat(
+
+  fontSize: 16,
+  fontWeight: FontWeight.w700,
+
+  color: Color(0xff5C5C5C),
+
+);
+final greenSmallText = GoogleFonts.montserrat(
+
     fontSize: 16,
     fontWeight: FontWeight.w500,
-    height: 1.4,
-    letterSpacing: 1,
-    color: Color(0xff0B615E)
+    color: Color(0xff009BA5)
 
 );
 

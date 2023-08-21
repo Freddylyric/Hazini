@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:hazini/screens/new%20screens/bottom_nav.dart';
 import 'package:http/http.dart' as http;
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/adapters/loan_model.dart';
@@ -155,7 +156,7 @@ class _RequestScreenState extends State<RequestScreen> {
                   child: Text('OK'),
                   onPressed: () {
                     //Navigator.of(context).pop();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNav()));
                   },
                 ),
               ],

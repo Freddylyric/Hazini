@@ -3,6 +3,7 @@ import 'package:hazini/utils/help_strings.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HelpScreen extends StatefulWidget {
   @override
@@ -125,6 +126,7 @@ class _HelpScreenState extends State<HelpScreen> {
     final size = MediaQuery.of(context).size;
     return  Scaffold(
 
+      backgroundColor: Color(0xffE5EBEA) ,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
@@ -132,16 +134,12 @@ class _HelpScreenState extends State<HelpScreen> {
           children: [
             const SizedBox(height: 40),
             // Help title
-            const Text(
+             Text(
               'HELP',
-              style: styles.greenBigText
+              style: GoogleFonts.montserrat(fontSize: 18, fontWeight: FontWeight.w500,color: Color(0xff5C5C5C)),
             ),
             const SizedBox(height: 10),
-            Divider(
-              color: styles.secondaryColor,
-              thickness: 2,
 
-            ),
             // const SizedBox(height: 10),
             // Help options
 
@@ -153,6 +151,13 @@ class _HelpScreenState extends State<HelpScreen> {
                     itemBuilder: (BuildContext context, int index) {
                       final category = faqCategories[index];
                       return Card(
+                        elevation: 1,
+                        shape:  RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(22),
+
+                        ),
+                        shadowColor:  Color(0xff5C5C5C),
+
                         child: ExpansionTile(
                           title: Text(category.title, style: greenSmallText,),
                           children: category.faqs.map((faq) {
@@ -162,7 +167,7 @@ class _HelpScreenState extends State<HelpScreen> {
                                 Align(
                                   alignment: Alignment.centerLeft,
                                   child: Container(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 16),
                                   child: Text(faq.answer, style: blackSmallText,),
                               ),
                                 ),]
@@ -176,8 +181,8 @@ class _HelpScreenState extends State<HelpScreen> {
 
 
             Divider(
-              color: styles.secondaryColor,
-              thickness: 2,
+              color: Colors.grey,
+              thickness: 1,
 
             ),
             SizedBox(height: 5),
@@ -187,8 +192,9 @@ class _HelpScreenState extends State<HelpScreen> {
 
               children: [
                 Text(
-                  'Contact us',
-                  style: styles.greenBigText, textAlign: TextAlign.start,
+                  'CONTACT US',
+                  style: GoogleFonts.montserrat( fontSize: 20, fontWeight: FontWeight.w500,color: Color(0xff5C5C5C)),
+                  textAlign: TextAlign.start,
                 ),SizedBox(height: 5),
                 // Email
                 GestureDetector(
@@ -197,42 +203,79 @@ class _HelpScreenState extends State<HelpScreen> {
                   },
                   child: Text(
                     'support@hazini.com',
-                    style: TextStyle(color: Colors.blue, fontSize: 16, fontWeight: FontWeight.w400, decoration: TextDecoration.underline),
+                    style: GoogleFonts.montserrat(color: Color(0xff009BA5), fontSize: 16, fontWeight: FontWeight.w500, decoration: TextDecoration.underline),
                   ),
                 ),
-                SizedBox(height: 10),
-                // Send message
-                Text(
-                  'Send us a message',
-                  style: styles.greenSmallText
-                ),
+
                 SizedBox(height: 10),
                 // Message input field
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextFormField(
-                    controller: _messageController,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: 'Message',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(16),
+                Container(
+
+                  height: 80,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow:  [
+                      BoxShadow(
+                        color: Color(0x2E2E2E40),
+                        offset: Offset(1, 3),
+                        blurRadius: 3,
+                        spreadRadius: 1,
+                      ),
+                    ],
+                    color: Colors.white,
+                  ),
+                  child: Center(
+                    child: TextFormField(
+                      controller: _messageController,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        hintText: 'Message',
+                        hintStyle: GoogleFonts.montserrat(color: Color(0xff9B9B9B), fontSize: 16, fontWeight: FontWeight.w500),
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    final phoneNumber = '0702364929'; // Replace with the desired phone number
-                    final message = _messageController.text;
+                SizedBox(height: 20),
+                Container(
+                  height: 56,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF23B0A5), Color(0xFF5357B1),],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      stops: [0.3, 1.0],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      final phoneNumber = '0702364929'; // Replace with the desired phone number
+                      final message = _messageController.text;
 
-                    // sendSMS(phoneNumber, message);
+                      // sendSMS(phoneNumber, message);
 
-                    launch('sms:0702364929?body=${_messageController.text}');
-                  },
-                  style: ButtonStyleConstants.primaryButtonStyle,
-                  child: Text('Send Message'),
+                      launch('sms:0702364929?body=${_messageController.text}');
+                    },
+                    child: Text('SEND MESSAGE',style: GoogleFonts.montserrat(fontWeight:FontWeight.w500,fontSize: 16,  color: Colors.white)),
+
+                      style:  ElevatedButton.styleFrom(
+
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10)
+                        ),
+
+                        backgroundColor: Colors.transparent,
+
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shadowColor: Colors.transparent,
+
+                      )
+                  ),
                 ),
 
               ],

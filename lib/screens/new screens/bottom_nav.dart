@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:hazini/screens/new%20screens/home_screen.dart';
 
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:hazini/screens/new%20screens/profile_page.dart';
 
+import 'package:hazini/screens/new%20screens/profile_screen.dart';
+
+import '../../adapters/user_model.dart';
 import 'history_page.dart';
 
 class BottomNav extends StatefulWidget {
@@ -14,27 +16,50 @@ class BottomNav extends StatefulWidget {
 
   @override
   State<BottomNav> createState() => _BottomNavState();
+
+
 }
 
 class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
+  UserModel? _userModel;
 
-  final screens = [
-    HomeScreen(),
-    HistoryPage(),
-    ProfilePage(),
+  late HomeScreen _homeScreen;
+
+  final screens = <Widget>[];
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize the HomeScreen instance
+    _homeScreen = HomeScreen(onUserModelAvailable: _handleUserModelAvailable);
+
+    // Populate the screens list
+    screens.addAll([
+      _homeScreen,
+      HistoryPage(userModel: _userModel ?? UserModel()),
+      ProfileScreen(),
+    ]);
+  }
 
 
 
+  void _handleUserModelAvailable(UserModel userModel) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      setState(() {
+        _userModel = userModel;
+      });
+    });
+  }
 
-
-  ];
 
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
         body: screens[currentIndex],
 
 

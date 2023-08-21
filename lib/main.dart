@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:hazini/screens/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hazini/screens/splash_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
@@ -120,6 +120,13 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+
+        fontFamily: GoogleFonts.montserrat(
+
+          fontWeight: FontWeight.w400,
+          fontSize: 14,
+        ).fontFamily,
+
       ),
       home: const SplashScreen(),
     );
@@ -168,11 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       await Hive.box<UserModel>('userBox').clear();
                      // Navigator.pop(context);
 
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                            (route) => false, // This line removes all the previous routes from the stack
-                      );
+
                     },
                     style: ButtonStyleConstants.secondaryButtonStyle,
                     child: Row(

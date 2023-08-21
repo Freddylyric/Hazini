@@ -7,7 +7,7 @@ import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 import 'package:http/http.dart' as http;
 
-import 'otp_confirmation.dart';
+
 
 class PasswordScreen extends StatefulWidget {
   PasswordScreen({Key? key}) : super(key: key);
@@ -50,12 +50,7 @@ class _PasswordScreenState extends State<PasswordScreen> {
 
         if (response.statusCode == 200) {
           // OTP request success, navigate to the OTP confirmation screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OTPConfirmScreen(),
-            ),
-          );
+
         } else {
           // OTP request failed, show an error dialog
           showDialog(

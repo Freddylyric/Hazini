@@ -85,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
         //Navigator.pop(context);
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => HomeScreen()),
+          MaterialPageRoute(builder: (context) => BottomNav()),
               (route) => false, // This line removes all the previous routes from the stack
         );
 
@@ -148,12 +148,11 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow:  [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-
-
-                              )
+                                color: Color(0x2E2E2E40),
+                                offset: Offset(1, 3),
+                                blurRadius: 3,
+                                spreadRadius: 1,
+                              ),
                             ],
                             color: Colors.white,
                           ),
@@ -188,12 +187,11 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(10),
                             boxShadow:  [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 5,
-                                blurRadius: 7,
-
-
-                              )
+                                color: Color(0x2E2E2E40),
+                                offset: Offset(1, 3),
+                                blurRadius: 3,
+                                spreadRadius: 1,
+                              ),
                             ],
                             color: Colors.white,
                           ),

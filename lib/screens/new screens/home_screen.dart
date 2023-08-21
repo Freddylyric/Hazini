@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hazini/adapters/user_model.dart';
 import 'package:hazini/screens/loan_repayment_screen.dart';
-import 'package:hazini/screens/profile_screen.dart';
+import 'package:hazini/screens/new%20screens/profile_screen.dart';
 import 'package:hazini/screens/request_screen.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
@@ -12,16 +12,15 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../adapters/loan_model.dart';
 import '../../main.dart';
-
-import '../history_screen.dart';
 import 'dart:convert';
 import 'package:hazini/adapters/user_model.dart';
 import 'package:http/http.dart' as http;
-
-import '../login_screen.dart';
+import 'bottom_nav.dart';
 
 class HomeScreen extends StatefulWidget {
+  final void Function(UserModel userModel) onUserModelAvailable;
 
+  HomeScreen({Key? key, required this.onUserModelAvailable}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -54,6 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isRequesting = false;
   bool _showLoanOffers = false;
   bool _isFetchingLoanOffers = false;
+  bool _userDataLoaded = false;
 
 
 
@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Text('OK'),
                   onPressed: () {
                     //Navigator.of(context).pop();
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNav()));
                   },
                 ),
               ],
@@ -315,6 +315,9 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _userModel = user;
       });
+      if (_userModel != null) {
+        widget.onUserModelAvailable(_userModel!);
+      }
     } else {
       showDialog(
         context: context,
@@ -343,7 +346,11 @@ class _HomeScreenState extends State<HomeScreen> {
     if (user != null) {
       setState(() {
         _userModel = user;
+        _userDataLoaded = true;
       });
+      if (_userModel != null) {
+        widget.onUserModelAvailable(_userModel!);
+      }
     } else {
       // Clear the user data from the Hive box
       box.clear();
@@ -353,37 +360,33 @@ class _HomeScreenState extends State<HomeScreen> {
       if (phoneNumber != null && phoneNumber.isNotEmpty) {
         await _fetchUserData(phoneNumber);
       }
+      setState(() {
+        _userDataLoaded = true; // Mark data as loaded
+      });
+
     }
   }
 
 
 
-
   @override
   Widget build(BuildContext context) {
-
-    //check if userdata is available
-    if (_userModel == null ){
-      return const Center(child: CircularProgressIndicator());
-    } else
-
-
-    if (_userModel?.canBorrow == true && !_showLoanOffers && _loanLimit != null ) {
-      // Display the screen for users with no current loan
-      return _buildBorrowForm();
-
-
-    }else if (_showLoanOffers){
-      // Display the loan offers dropdown and request loan button
-      return _buildLoanOfferScreen();
-
-
+    if (!_userDataLoaded) {
+      // Return a loading indicator or some other UI until _userModel is initialized
+      return  const Center(child: CircularProgressIndicator());
     } else {
-
-    return _buildPendingLoanScreen();
+      // Your existing logic when _userModel is initialized
+      if (_userModel.canBorrow == false) {
+        return _buildPendingLoanScreen();
+      } else if (_userModel.canBorrow == true && _loanLimit != null && !_showLoanOffers) {
+        return _buildBorrowForm();
+      } else if (_showLoanOffers) {
+        return _buildLoanOfferScreen();
+      }
+      else{
+        return const Center(child: CircularProgressIndicator());
+      }
     }
-
-
   }
 
 
@@ -407,14 +410,14 @@ class _HomeScreenState extends State<HomeScreen> {
               // ... Your UI for displaying loan limit and borrow form ...
 
               SizedBox(height: 100,),
-              Text('Hello ${_userModel!.name},', style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xff606060)),),
-              SizedBox(height: 10,),
+              Text('Hello ${toTitleCase(_userModel!.name?? '')},', style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xff606060)),),
+              SizedBox(height: 5,),
               Text("Your loan details", style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff5C5C5C)),),
 
-              SizedBox(height: 30,),
+              SizedBox(height: 20,),
               Text("Loan Limit:  ${NumberFormat.currency(symbol: 'KES ').format(_loanLimit!)} ", style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xff5C5C5C)),),
 
-              SizedBox(height: 30,),
+              SizedBox(height: 20,),
               Text("Amount ", style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w700, color: Color(0xff5C5C5C)),),
 
               SizedBox(height: 10,),
@@ -426,11 +429,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      blurRadius: 7,
-
-
-                    )
+                      color: Color(0x2E2E2E40),
+                      offset: Offset(1, 3),
+                      blurRadius: 3,
+                      spreadRadius: 1,
+                    ),
                   ],
                   color: Colors.white,
                 ),
@@ -487,9 +490,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-
-
-
               if (_repaymentItems.isNotEmpty) ...[
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -501,8 +501,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     Container(
 
-
-
                       height: 56,
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(horizontal: 16),
@@ -510,11 +508,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         borderRadius: BorderRadius.circular(10),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 7,
-
-
-                          )
+                            color: Color(0x2E2E2E40),
+                            offset: Offset(1, 3),
+                            blurRadius: 3,
+                            spreadRadius: 1,
+                          ),
                         ],
                         color: Colors.white,
                       ),
@@ -625,7 +623,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Center(
                 child: TextButton(onPressed: () {
                   // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> ForgotPassword()), (route) => false);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNav()));
                 },
 
                     child: Text(
@@ -647,7 +645,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildLoanOfferScreen() {
     return Scaffold(
       backgroundColor: Color(0xffE5EBEA),
-      body: Center(
+      body:
+      Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Column(
@@ -660,7 +659,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
               // Display loan offers dropdown
               // ... Your UI for displaying loan offers dropdown ...
-              Text('Hello ${_userModel!.name?? ''},',style: GoogleFonts.montserrat(fontSize: 14,fontWeight: FontWeight.w400, color: Color(0xff606060)),),
+              Text('Hello ${toTitleCase(_userModel!.name?? '')},',style: GoogleFonts.montserrat(fontSize: 14,fontWeight: FontWeight.w400, color: Color(0xff606060)),),
               SizedBox(height: 10,),
               Text("Request loan", style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff5C5C5C)),),
               SizedBox(height: 20,),
@@ -746,7 +745,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: TextButton(onPressed: () {
                   // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> ForgotPassword()), (route) => false);
 
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNav()));
 
                   //Navigator.pop(context);
                 },
@@ -767,176 +766,109 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildPendingLoanScreen() {
     return Scaffold(
-      backgroundColor: styles.backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: styles.backgroundColor,
-        leading: Padding(
-          padding: EdgeInsets.all(5),
-          child: GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) =>  ProfileScreen()));
-            },
-            child:
+      backgroundColor: Color(0xffE5EBEA),
 
-
-            CircleAvatar(
-              backgroundColor: styles.primaryColor,
-              child: Text(_userModel!.name!.substring(0, 2),),
-
-            ),
-
-          ),),
-        title: Text('Hi there ${_userModel?.name},', style: TextStyle(
-          fontFamily: 'Guerrer Light',
-          fontSize: 18,
-          fontWeight: FontWeight.w500,
-          height: 1.23,
-          letterSpacing: 1,
-          color: Color(0xff0B615E),
-        )),
-
-
-
-      ),
       body: RefreshIndicator(
         onRefresh: _refreshUserData,
         child:
-        SingleChildScrollView(
+
+        Center(
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
-                  children: [
-                    const Text(
-                      'Your loans',
-                      style: styles.greenBigText,
-                    ),
-                    Spacer(),
-                    IconButton(
-                      icon: Icon(Icons.refresh),
-                      onPressed: () {
-                        // Trigger the refresh process
-                        _refreshUserData();
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 20),
-                // Container for loan info
+                SizedBox(height: 40,),
+
+
+
+                // Display loan offers dropdown
+                // ... Your UI for displaying loan offers dropdown ...
+                Text('Hello ${toTitleCase(_userModel!.name?? '')},',style: GoogleFonts.montserrat(fontSize: 14,fontWeight: FontWeight.w400, color: Color(0xff606060)),),
+                SizedBox(height: 10,),
+                Text("Your loan details", style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff5C5C5C)),),
+
+                SizedBox(height: 30,),
+
+
                 Container(
-                  padding: const EdgeInsets.all(20),
+                  height: 300,
+                  width: double.infinity,
+                  padding: EdgeInsets.all(16),
                   decoration: BoxDecoration(
                     color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey[300]!,
-                        blurRadius: 4,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      // Loan amount
-                      Row(
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'You have a loan of:',
-                                style: styles.greenSmallText,
-                              ),SizedBox(height: 10),
-                              Text(
-                                NumberFormat.currency(
-                                  symbol: 'KES ',
-                                ).format(double.tryParse(_userModel?.outstandingLoan?['due_amount'] ?? '0')?? 0.00),
-                                style: styles.greenBigText,
-                              ),
+                  child:  Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
 
-                            ],
-                          ),
 
-                          const Spacer(),
-                          IconButton(
-                            icon: Icon(
-                              _isLoanInfoExpanded
-                                  ? Icons.keyboard_arrow_up
-                                  : Icons.keyboard_arrow_down,
-                              color: Colors.grey[600],
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isLoanInfoExpanded = !_isLoanInfoExpanded;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      if (_isLoanInfoExpanded) ...[
-                        const SizedBox(height: 16),
-                        // Loan info details
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            _buildLoanInfoRow('Principal', 'KES ${_userModel?.outstandingLoan?['principal']?.toString() ?? 0.00}'),
-                            _buildLoanInfoRow('Interest', '${_userModel?.outstandingLoan?['interest']?.toString() ?? 0.00} %'),
-                            _buildLoanInfoRow(
-                              'Balance',
-                              'KES ${NumberFormat.currency(
-                                symbol: '',
-                                decimalDigits: 2,
-                              ).format(double.tryParse(_userModel?.outstandingLoan?['due_amount'] ?? '0') ?? 0.00)}',
-                            ),
-                            _buildLoanInfoRow('Period', '${_userModel?.outstandingLoan?['duration']?.toString() ?? 0} Days'),
-                            _buildLoanInfoRow('Date Borrowed', _userModel?.outstandingLoan?['requested_at'] ?? ''),
-                            _buildLoanInfoRow('Deadline', _userModel?.outstandingLoan?['due_on'] ?? '')
-                            // Placeholder for deadline
-                          ],
+                      children: [
+                        Text(
+                          'Amount Due: ${NumberFormat.currency(
+                            symbol: 'KES ',
+                          ).format(double.tryParse(_userModel?.outstandingLoan?['due_amount'] ?? '0')?? 0.00)}',
+                          style: styles.greenLargeText, textAlign: TextAlign.start,
                         ),
+                        SizedBox(height: 16,),
+
+                        _buildLoanInfoRow('Principal', 'KES ${_userModel?.outstandingLoan?['principal']?.toString() ?? 0.00}'),
+                        _buildLoanInfoRow('Interest', '${_userModel?.outstandingLoan?['interest']?.toString() ?? 0.00} %'),
+                        _buildLoanInfoRow(
+                          'Balance',
+                          'KES ${NumberFormat.currency(
+                            symbol: '',
+                            decimalDigits: 2,
+                          ).format(double.tryParse(_userModel?.outstandingLoan?['due_amount'] ?? '0') ?? 0.00)}',
+                        ),
+                        _buildLoanInfoRow('Period', '${_userModel?.outstandingLoan?['duration']?.toString() ?? 0} Days'),
+                        _buildLoanInfoRow('Date Borrowed', _userModel?.outstandingLoan?['requested_at'] ?? ''),
+                        _buildLoanInfoRow('Deadline', _userModel?.outstandingLoan?['due_on'] ?? '')
+
                       ],
-                      SizedBox(height: 10),
-                      const Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                      SizedBox(height: 10,),
-                      // Pay now button
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => LoanRepaymentScreen(userModel: _userModel!,)));
-                              // Add "pay now" logic here
-                            },
-                            style: styles.ButtonStyleConstants.smallButtonStyle,
-                            child: const Text('Pay now'),
-                          ),
-                          const Spacer(),
-                          ElevatedButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => const RequestScreen()));
+                    ),
+                  ),
 
-                          },
-                              style: styles.ButtonStyleConstants.smallButtonStyle,
-                              child: const Text('Request a Loan')),
-                        ],
-                      ),
+                ),
 
-                    ],
+                SizedBox(height: 30,),
+                // Request loan button
+                Container(
+
+                  height: 56,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF23B0A5), Color(0xFF5357B1),],
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      stops: [0.3, 1.0],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => LoanRepaymentScreen(userModel: _userModel!,)));
+                      },
+                      child: Text('REPAY LOAN', style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white)),
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
+                        backgroundColor: Colors.transparent,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shadowColor: Colors.transparent,
+                      )
                   ),
                 ),
-                SizedBox(height: 16),
-                // Tabs for History, Profile, and Help
+
 
               ],
             ),
           ),
         ),
+
+
       ),
     );
   }
@@ -973,6 +905,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             child: Text(
@@ -983,7 +916,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Text(
               value,
-              style: styles.greenSmallText
+              style: styles.blackSmallText
             ),
           ),
 
@@ -993,6 +926,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+
+  String toTitleCase(String text) {
+    if (text == null || text.isEmpty) {
+      return '';
+    }
+    return text.split(' ')
+        .map((word) => word[0].toUpperCase() + word.substring(1).toLowerCase())
+        .join(' ');
+  }
 
   void _performLogout() async {
 
