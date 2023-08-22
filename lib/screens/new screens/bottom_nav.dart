@@ -1,10 +1,11 @@
 
 
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
+import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hazini/screens/new%20screens/home_screen.dart';
 
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 
 import 'package:hazini/screens/new%20screens/profile_screen.dart';
 
@@ -22,38 +23,21 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int currentIndex = 0;
-  UserModel? _userModel;
 
-  late HomeScreen _homeScreen;
-
-  final screens = <Widget>[];
 
   @override
   void initState() {
     super.initState();
 
-    // Initialize the HomeScreen instance
-    _homeScreen = HomeScreen(onUserModelAvailable: _handleUserModelAvailable);
 
-    // Populate the screens list
-    screens.addAll([
-      _homeScreen,
-      HistoryPage(userModel: _userModel ?? UserModel()),
-      ProfileScreen(),
-    ]);
+
   }
 
-
-
-  void _handleUserModelAvailable(UserModel userModel) {
-    WidgetsBinding.instance?.addPostFrameCallback((_) {
-      setState(() {
-        _userModel = userModel;
-      });
-    });
-  }
-
-
+  final screens =[
+    HomeScreen(),
+    HistoryPage(),
+    ProfileScreen(),
+  ];
 
 
   @override
@@ -66,7 +50,7 @@ class _BottomNavState extends State<BottomNav> {
 
         bottomNavigationBar: Theme(
             data: Theme.of(context).copyWith(
-              iconTheme: IconThemeData(color: Colors.white)
+              iconTheme: IconThemeData(color: Color(0xffE5EBEA))
             ),
 
             child: CurvedNavigationBar(
@@ -76,10 +60,24 @@ class _BottomNavState extends State<BottomNav> {
           buttonBackgroundColor: Color(0xff009BA5),
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
-          items: <Widget>[
-            Icon(Icons.home, size: 30, ),
-            Icon(Icons.history, size: 30,),
-            Icon(Icons.person, size: 30,),
+          items: [
+            CurvedNavigationBarItem(
+              child:  Icon(Icons.home, size: 30,),
+              label: 'Home',
+              labelStyle: TextStyle(fontSize: 12,fontWeight: FontWeight.w500, color: Color(0xffE5EBEA)),
+            ),
+            CurvedNavigationBarItem(
+              child:  Icon(Icons.history, size: 30,),
+              label: 'History',
+              labelStyle: TextStyle(fontSize: 12,fontWeight: FontWeight.w500, color: Color(0xffE5EBEA)),
+
+            ),
+            CurvedNavigationBarItem(
+              child:  Icon(Icons.person, size: 30,),
+              label: 'Profile',
+              labelStyle: TextStyle(fontSize: 12,fontWeight: FontWeight.w500, color: Color(0xffE5EBEA)),
+
+            ),
           ],
           onTap: (index) {
             setState(() {

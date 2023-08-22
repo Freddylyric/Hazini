@@ -18,9 +18,9 @@ import 'package:http/http.dart' as http;
 import 'bottom_nav.dart';
 
 class HomeScreen extends StatefulWidget {
-  final void Function(UserModel userModel) onUserModelAvailable;
 
-  HomeScreen({Key? key, required this.onUserModelAvailable}) : super(key: key);
+
+
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -315,9 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         _userModel = user;
       });
-      if (_userModel != null) {
-        widget.onUserModelAvailable(_userModel!);
-      }
+
     } else {
       showDialog(
         context: context,
@@ -348,9 +346,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _userModel = user;
         _userDataLoaded = true;
       });
-      if (_userModel != null) {
-        widget.onUserModelAvailable(_userModel!);
-      }
+
     } else {
       // Clear the user data from the Hive box
       box.clear();

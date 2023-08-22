@@ -8,8 +8,8 @@ import '../loan_details_screen.dart';
 
 
 class HistoryPage extends StatefulWidget {
-  final UserModel? userModel;
-  const HistoryPage({Key? key, required this.userModel}) : super(key: key);
+
+  const HistoryPage({Key? key, }) : super(key: key);
 
 
 
@@ -32,7 +32,7 @@ class _HistoryPageState extends State<HistoryPage> {
             children: [
 
               SizedBox(height: 30,),
-              Text('Hello ${widget.userModel!.name?? ''},',style: GoogleFonts.montserrat(fontSize: 14,fontWeight: FontWeight.w400, color: Color(0xff606060)),),
+              Text('Hello widget.userModel!.name?? ''},',style: GoogleFonts.montserrat(fontSize: 14,fontWeight: FontWeight.w400, color: Color(0xff606060)),),
               SizedBox(height: 10,),
               Text("Your loan History", style: GoogleFonts.montserrat(fontSize: 16, fontWeight: FontWeight.w600, color: Color(0xff5C5C5C)),),
 
@@ -52,10 +52,10 @@ class _HistoryPageState extends State<HistoryPage> {
                           title: Text(
                             NumberFormat.currency(
                               symbol: 'KES ',
-                            ).format(double.tryParse(widget.userModel?.outstandingLoan?['due_amount'] ?? '0')?? 0.00),
+                            ).format(double.tryParse( '0.00')),
                             style: styles.greenSmallText,
                           ), // Placeholder for loan
-                          subtitle: Text('${widget.userModel?.outstandingLoan? ['requested_at']?? ''}'?? '', style: styles. greenSmallText,), // Placeholder
+                          subtitle: Text('', style: styles. greenSmallText,), // Placeholder
 
 
                           trailing: Row(
@@ -67,10 +67,11 @@ class _HistoryPageState extends State<HistoryPage> {
                           ),
                           onTap: () {
                             // Navigate to loan details screen
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => LoanDetailsScreen( loan: widget.userModel?.outstandingLoan)),);
-                          },
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => LoanDetailsScreen( loan: widget.userModel?.outstandingLoan)),);
+                            //
+                            },
                         ));
 
                   },

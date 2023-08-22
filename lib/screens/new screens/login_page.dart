@@ -202,7 +202,7 @@ class _LoginPageState extends State<LoginPage> {
                               labelText: 'Password',
                               labelStyle: GoogleFonts.montserrat( color: Color(0xff515151), fontWeight: FontWeight.w400, fontSize: 14, height: 17),
                               suffixIcon: IconButton(
-                                icon: Icon(_obscurePin ? Icons.visibility  : Icons.visibility_off, color: Color(0xff009BA5),),
+                                icon: Icon(_obscurePin ? Icons.visibility_off  : Icons.visibility, color: Color(0xff009BA5),),
                                 onPressed: () {
                                   setState(() {
                                     _obscurePin = !_obscurePin;

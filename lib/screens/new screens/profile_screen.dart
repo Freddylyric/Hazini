@@ -12,6 +12,7 @@ import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import '../../adapters/user_model.dart';
 import 'forgot_password_page.dart';
+import 'login_page.dart';
 
 class ProfileScreen extends StatefulWidget {
   // final UserModel userModel;
@@ -290,7 +291,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // Navigate to the landing screen and remove all previous screens from the stack
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => MyHomePage()),
+      MaterialPageRoute(builder: (context) => LoginPage()),
           (route) => false, // This line removes all the previous routes from the stack
     );
   }

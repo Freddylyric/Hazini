@@ -191,22 +191,15 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                       child: ElevatedButton(
 
-                        onPressed: (){
 
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> OTPConfirmationPage()));
 
-                        },
-                          child: Text(
-                            'SEND', style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
-
-                          ),
-                          // onPressed: _isLoading ? null: _requestOTP,
-                          // child: _isLoading
-                          //     ? CircularProgressIndicator()
-                          //     : Text(
-                          //         'SEND',
-                          //         style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
-                          //       ),
+                          onPressed: _isLoading ? null: _requestOTP,
+                          child: _isLoading
+                              ? CircularProgressIndicator()
+                              : Text(
+                                  'SEND',
+                                  style: GoogleFonts.montserrat(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.white),
+                                ),
                           style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(11)),
                             backgroundColor: Colors.transparent,
