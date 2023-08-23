@@ -198,6 +198,7 @@ class _LoginPageState extends State<LoginPage> {
                           child: TextFormField(
                             controller: _passwordController,
                             obscureText: _obscurePin,
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Password',
                               labelStyle: GoogleFonts.montserrat( color: Color(0xff515151), fontWeight: FontWeight.w400, fontSize: 14, height: 17),

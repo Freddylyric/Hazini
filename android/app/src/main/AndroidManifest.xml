@@ -2,7 +2,7 @@
     package="com.example.hazini">
     <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="hazini"
+        android:label="Hazini"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -51,12 +51,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
         if (response.statusCode == 200) {
           // OTP request success, navigate to the OTP confirmation screen
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => OTPConfirmationPage(),
-            ),
-          );
+     Navigator.push(context, MaterialPageRoute(builder: (context)=>OTPConfirmationPage()));
         } else {
           // OTP request failed, show an error dialog
           showDialog(

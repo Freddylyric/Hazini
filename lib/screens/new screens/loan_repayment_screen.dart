@@ -11,7 +11,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
-import '../adapters/user_model.dart';
+import '../../adapters/user_model.dart';
 
 class LoanRepaymentScreen extends StatefulWidget {
   final UserModel userModel;

@@ -46,7 +46,7 @@ dependencies:
   firebase_core: ^2.15.0
   firebase_crashlytics: ^3.3.4
   firebase_messaging: ^14.6.5
-
+  shimmer: ^3.0.0
   curved_labeled_navigation_bar: ^2.0.2
 
 dev_dependencies:
@@ -67,7 +67,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/hazini_logo.png"
+  image_path: "assets/images/HaziniLogo.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "hazini" "\0"
+            VALUE "FileDescription", "Hazini" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "hazini" "\0"
+            VALUE "InternalName", "Hazini" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
             VALUE "OriginalFilename", "hazini.exe" "\0"
-            VALUE "ProductName", "hazini" "\0"
+            VALUE "ProductName", "Hazini" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

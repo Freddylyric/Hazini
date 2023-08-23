@@ -3,35 +3,43 @@ import 'package:flutter/material.dart';
 import 'package:hazini/screens/new%20screens/home_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
+import 'package:intl/intl.dart';
 
 
-import 'new screens/bottom_nav.dart';
+import 'bottom_nav.dart';
 
 class LoanDetailsScreen extends StatelessWidget {
   final Map<String, dynamic>? loan;
 
 
-  final int loanNumber = 1;
-  // final double loanAmount = 5000;
 
   const LoanDetailsScreen( {Key? key, required this.loan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    bool isActive = loan!['status'] == 1;
+
+    final dueOnString = loan!['due_on']['Time'];
+    final dateFormatter = DateFormat('yyyy-MM-ddTHH:mm:ssZ'); // Format used in the API response
+    final dueOnDateTime = dateFormatter.parse(dueOnString);
+// Format the date to display in a more readable format
+    final formattedDueDate = DateFormat('MMM dd, yyyy').format(dueOnDateTime);
+
+
     return Scaffold(
       backgroundColor: Color(0xffE5EBEA),
 
       body: Center(
 
         child: ListView(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(24),
           children: [
 
-            SizedBox(height: 50,),
+            SizedBox(height: 80,),
             Text("Your loan Details", style: TextStyle(fontSize: 18, fontWeight:FontWeight.w600,color: Color(0xff5C5C5C)),),
             SizedBox(height: 16,),
             Text(
-              'Loan No.${loanNumber.toString()}',
+              'Loan No.${loan? ['loan_product_id'].toString()?? ''}',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: Color(0xff606060)),
             ),
             SizedBox(height: 5),
@@ -64,7 +72,7 @@ class LoanDetailsScreen extends StatelessWidget {
               children: [
 
                 _buildInfoRow('Period:', '${loan? ['duration'] ?? '0'} days'),
-                _buildInfoRow('Repayment date:', '${loan? ['due_on'] ?? ''}'),
+                _buildInfoRow('Repayment date:', formattedDueDate),
 
               ],
             ),
@@ -74,7 +82,7 @@ class LoanDetailsScreen extends StatelessWidget {
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff5C5C5C)),
             ),
             SizedBox(height: 16),
-            Text('Overdue repayment',
+            Text( _getStatusText(loan!['status']),
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff5C5C5C)),
             ), // Placeholder for overdue repayment
             SizedBox(height: 20),
@@ -89,18 +97,20 @@ class LoanDetailsScreen extends StatelessWidget {
 
 
               children: [
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 16),
-                  child: Center(
-                    child: (double.tryParse(loan?['paid_amount'] ?? '0') ?? 0) > 0
-                        ? Text(
-                      'Paid amount: ${loan?['paid_amount']}',
-                      style: styles.greenSmallText,
-                    )
-                        :  Text(
-                      'Seems like there is no history available for this loan at the moment',
-                      style: styles.greenSmallText,
-                    ),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child:
+                  (double.tryParse(loan?['paid_amount'] ?? '0') ?? 0) > 0
+                      ?
+
+                  Text(
+
+                    'Paid amount: ${loan?['paid_amount']}',
+                    style: styles.greenSmallText,
+                  )
+                      :  Text(
+                    'Seems like there is no history available for this loan at the moment',
+                    style: styles.greenSmallText,
                   ),
                 ),
 
@@ -124,11 +134,18 @@ class LoanDetailsScreen extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: ElevatedButton(onPressed: (){
-                //TODO: handle close
-                Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNav()));
+
+                if (isActive) {
+                  // TODO: Handle repay loan
+                } else {
+                  Navigator.pop(context); // Navigate back to history page
+                }
+                // //TODO: handle close
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => BottomNav()));
+                //
               },
 
-                  child: const Text("REPAY LOAN",
+                  child:  Text(isActive ? "REPAY LOAN" : "CLOSE",
                     style: TextStyle(fontWeight:FontWeight.w500,fontSize: 16,  color: Colors.white)),
                 style:  ElevatedButton.styleFrom(
 
@@ -179,6 +196,29 @@ class LoanDetailsScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  String _getStatusText(int statusCode) {
+    switch (statusCode) {
+      case 9:
+        return 'Paid';
+      case 2:
+        return 'Pending Disbursement';
+      case 1:
+        return 'Active';
+      case -1:
+        return 'Pending Approval';
+      case -4:
+        return 'Failed';
+      case -5:
+        return 'Disbursement Failed';
+      case -9:
+        return 'Rejected';
+      case -6:
+        return 'Defaulted';
+      default:
+        return 'Unknown Status';
+    }
   }
 
 }

@@ -159,7 +159,7 @@ class _HelpScreenState extends State<HelpScreen> {
                         shadowColor:  Color(0xff5C5C5C),
 
                         child: ExpansionTile(
-                          title: Text(category.title, style: greenSmallText,),
+                          title: Text(category.title, style: TextStyle(fontWeight: FontWeight.w500,fontSize: 16,color: Color(0xff009BA5)),),
                           children: category.faqs.map((faq) {
                             return ExpansionTile(
                               title: Text(faq.title, ),

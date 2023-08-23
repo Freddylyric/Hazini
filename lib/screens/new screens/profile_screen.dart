@@ -10,6 +10,7 @@ import 'package:hazini/utils/styles.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:shimmer/shimmer.dart';
 import '../../adapters/user_model.dart';
 import 'forgot_password_page.dart';
 import 'login_page.dart';
@@ -61,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           builder: (BuildContext context, AsyncSnapshot<http.Response> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: CircularProgressIndicator(),
+                child: getShimmerLoading(),
               );
             } else if (snapshot.hasError) {
               return Center(
@@ -96,14 +97,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                              backgroundColor: Color(0xff009BA5),
                                child: Icon(Icons.person_2_sharp, color: Color(0xffE5EBEA), size: 30,)),
                            SizedBox(height: 5,),
-                           Text(toTitleCase(userData['full_names']), style: greenLargeText,)
+                           Text(toTitleCase(userData['full_names']?? ''), style: greenLargeText,)
                          ],
                        ),
                       ),
 
                       Expanded(
                         child: ListView(
-                            padding: EdgeInsets.all(20),
+                            padding: EdgeInsets.all(24),
                             children: [
 
                               Text(
@@ -113,7 +114,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               SizedBox(height: 10),
                               Column(
                                 children: [
-                                  _buildInfoRow('Full Name:', toTitleCase(userData['full_names'])),
+                                  _buildInfoRow('Full Name:', toTitleCase(userData['full_names'])?? ''),
                                   _buildInfoRow('Email Address:', userData['email']['String'].toString() ?? ''),
                                   _buildInfoRow('National ID:',userData['national_id_number'].toString() ?? ''),
 
@@ -189,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 color: Colors.grey,
                                 thickness: 1,
                               ),
-                              SizedBox(height: 10,),
+                              SizedBox(height: 20,),
 
 
 
@@ -204,7 +205,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   style:GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.w600, color: Color(0xff5C5C5C)),
                                 ),
                               ),
-                              SizedBox(height: 20,),
+                              SizedBox(height: 30,),
                               GestureDetector(
                                 onTap: () {
                                   // Perform logout actions here
@@ -279,6 +280,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
 
+  Shimmer getShimmerLoading() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[350]!,
+      highlightColor: Colors.grey[100]!,
+      child: Scaffold(
+
+      ),
+    );
+  }
 
 
   void _performLogout() async {
@@ -295,4 +305,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
           (route) => false, // This line removes all the previous routes from the stack
     );
   }
+
 }

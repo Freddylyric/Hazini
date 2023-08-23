@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _loadScreen() async {
-    await Future.delayed(Duration(seconds: 5)); // add a delay of 3 seconds
+    await Future.delayed(Duration(seconds: 2)); // add a delay of 2 seconds
 
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
   }
@@ -40,8 +40,8 @@ class _SplashScreenState extends State<SplashScreen> {
         end: Alignment.bottomCenter,
         stops: [0.2, 1.0],
         colors: [
-          Color(0xFF23B0A5), // #019BA5
-          Color(0xFF5357B1), // #62257B
+          Color(0xFF019BA5), // #019BA5
+          Color(0xFF62257B), // #62257B
     ],
     //transform: GradientRotation(360 * (3.1415926 / 45.0)),
     ),

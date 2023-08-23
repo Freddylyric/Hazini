@@ -84,12 +84,9 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
         // Password reset success, automatically log in the user
         // logic to save the user session or token
         // and navigate to the home screen
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => LoginPage(),
-          ),
-        );
+
+
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
       } else {
         // Password reset failed, show an error dialog
         showDialog(
@@ -167,7 +164,7 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
 
                             child: TextFormField(
                               controller: _otpController,
-                              keyboardType: TextInputType.phone,
+                              keyboardType: TextInputType.text,
                               decoration: InputDecoration(
                                   labelText: 'OTP',
                                   labelStyle: GoogleFonts.montserrat( color: Color(0xff515151), fontWeight: FontWeight.w400, fontSize: 14, height: 17),
@@ -206,6 +203,7 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
                             child: TextFormField(
                               controller: _pinController,
                               obscureText: _obscurePin,
+                              keyboardType: TextInputType.number,
                               decoration: InputDecoration(
                                 labelText: 'New Password',
                                 labelStyle: GoogleFonts.montserrat( color: Color(0xff515151), fontWeight: FontWeight.w400, fontSize: 14, height: 17),
