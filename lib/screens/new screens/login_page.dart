@@ -8,9 +8,9 @@ import 'package:hazini/screens/new%20screens/forgot_password_page.dart';
 
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
+import 'package:hazini/config.dart' as config;
 
 import '../../adapters/user_model.dart';
-import 'home_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -63,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
       print(phoneNumber);
       print(password);
       final response = await http.post(
-        Uri.parse('https://dev.hazini.com/ussd/login'),
+        Uri.parse(config.loginUrl),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
           'phone_number': phoneNumber,
@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
 
-                SizedBox(height: 50,),
+               // SizedBox(height: 50,),
                 Image(
                   image: AssetImage('assets/images/haz2New.png'),
                   height: 250,

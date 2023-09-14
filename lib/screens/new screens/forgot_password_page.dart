@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hazini/screens/new%20screens/login_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:hazini/config.dart' as config;
 
 import 'otp_confirmation_page.dart';
 
@@ -38,7 +39,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
       // Send the OTP request
       try {
-        final url = Uri.parse('https://dev.hazini.com/ussd/forgot-password');
+        final url = Uri.parse(config.OTPPasswordUrl);
         final response = await http.post(
           url,
           headers: {'Content-Type': 'application/json'},

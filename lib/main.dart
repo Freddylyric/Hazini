@@ -11,6 +11,9 @@ import 'package:http/http.dart' as http;
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:firebase_core/firebase_core.dart';
+
+import 'adapters/customer_model.dart';
+import 'adapters/transactions_model.dart';
 import 'firebase_options.dart';
 
 import 'adapters/user_model.dart';
@@ -31,7 +34,12 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
   Hive.registerAdapter(UserModelAdapter());
-  await Hive.openBox<UserModel>('userBox');
+  Hive.registerAdapter(CustomerModelAdapter());
+  Hive.registerAdapter(TransactionModelAdapter());
+
+  final userBox = await Hive.openBox<UserModel>('userBox');
+  final customerDetailsBox = await Hive.openBox<CustomerModel>('customer_details');
+  final transactionBox = await Hive.openBox<TransactionModel>('transactions');
 
 
 

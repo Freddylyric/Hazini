@@ -4,19 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:hazini/screens/new%20screens/bottom_nav.dart';
-import 'package:hazini/screens/new%20screens/home_screen.dart';
 import 'package:hazini/utils/styles.dart' as styles;
 import 'package:hazini/utils/styles.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:hazini/config.dart' as config;
 import 'package:intl/intl.dart';
 
-import '../../adapters/user_model.dart';
+import '../../adapters/customer_model.dart';
+
+
+
 
 class LoanRepaymentScreen extends StatefulWidget {
-  final UserModel userModel;
+  final CustomerModel customerDetails;
 
-  const LoanRepaymentScreen({Key? key, required this.userModel,}) : super(key: key);
+  const LoanRepaymentScreen({Key? key, required this.customerDetails,}) : super(key: key);
 
   @override
   _LoanRepaymentScreenState createState() => _LoanRepaymentScreenState();
@@ -37,7 +40,7 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
     });
     final token = await _storage.read(key: 'token');
     if (token != null && token.isNotEmpty) {
-      final url = Uri.parse('https://dev.hazini.com/ussd/initiate-stk-push');
+      final url = Uri.parse(config.loanPaymentUrl);
       final requestBody1 = json.encode({'amount': _repayAmount});
       final response = await http.post(
         url,
@@ -102,9 +105,9 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
 
     @override
   Widget build(BuildContext context) {
-    final userModel = widget.userModel;
+    final userModel = widget.customerDetails;
 
-    double amount = double.tryParse(widget.userModel.outstandingLoan?['due_amount'] ?? '0') ?? 0;
+    double amount = double.tryParse(widget.customerDetails.outstandingLoan?['due_amount'] ?? '0') ?? 0;
 
     // // Format the amount as currency
     // String formattedAmount = NumberFormat.currency(
@@ -242,7 +245,7 @@ class _LoanRepaymentScreenState extends State<LoanRepaymentScreen> {
               Center(
                 child: TextButton(onPressed: () {
                   // Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> ForgotPassword()), (route) => false);
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=> BottomNav()));
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=> BottomNav())  , (route) => false);
                 },
 
                     child: Text(

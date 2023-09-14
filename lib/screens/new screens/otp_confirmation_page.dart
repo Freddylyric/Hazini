@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hazini/screens/new%20screens/login_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:hazini/config.dart' as config;
 
 import 'forgot_password_page.dart';
 
@@ -57,17 +58,14 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
       _isVerifying = true;
     });
 
-
     final pin = _pinController.text;
     final pin2 = _confirmPinController.text;
     final otp = _otpController.text;
 
-
-
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      final url = Uri.parse('https://dev.hazini.com/ussd/reset-password');
+      final url = Uri.parse(config.changePasswordUrl);
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
@@ -78,12 +76,6 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
         }),
       );
       if (response.statusCode == 200) {
-
-
-
-        // Password reset success, automatically log in the user
-        // logic to save the user session or token
-        // and navigate to the home screen
 
 
         Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
@@ -128,7 +120,7 @@ class _OTPConfirmationPageState extends State<OTPConfirmationPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                SizedBox(height: 50,),
+               // SizedBox(height: 50,),
                 CircleAvatar(
                   backgroundColor: Colors.white,
                   radius: 80,

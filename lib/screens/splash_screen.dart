@@ -18,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _loadScreen() async {
-    await Future.delayed(Duration(seconds: 2)); // add a delay of 2 seconds
+    await Future.delayed(Duration(seconds: 1)); // add a delay of 1 seconds
 
     Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>LoginPage()), (route) => false);
   }
